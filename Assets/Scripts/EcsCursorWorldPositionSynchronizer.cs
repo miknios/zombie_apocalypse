@@ -8,8 +8,7 @@ public class EcsCursorWorldPositionSynchronizer : MonoBehaviour
 	[SerializeField] private Camera mainCamera;
 	private EntityManager entityManager;
 	private Entity cursorEntity;
-	private RaycastHit[] raycastHits = new RaycastHit[1];
-	private Ray ray;
+	private readonly RaycastHit[] raycastHits = new RaycastHit[1];
 
 	private void Awake()
 	{
@@ -37,7 +36,7 @@ public class EcsCursorWorldPositionSynchronizer : MonoBehaviour
 
 	private void CalculateCursorWorldPosition(ref float3 position)
 	{
-		ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+		Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 		int hitCount =
 			Physics.RaycastNonAlloc(ray, raycastHits, Mathf.Infinity, 1 << UnityLayer.MOUSE_RAYCAST_COLLISION);
 

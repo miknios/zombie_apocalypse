@@ -30,6 +30,7 @@ namespace Unity.Mathematics
 					for (int i = 0; i < playerEntities.Length; i++)
 					{
 						float3 newForward = cursorPosition.Value;
+						newForward.y = 0;
 						quaternion newRotationValue = quaternion.LookRotation(newForward, new float3(0, 1, 0));
 						Rotation newRotation = new Rotation
 						{
