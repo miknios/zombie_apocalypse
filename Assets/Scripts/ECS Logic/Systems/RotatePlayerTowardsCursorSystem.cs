@@ -13,7 +13,7 @@ namespace Unity.Mathematics
 		{
 			base.OnCreate();
 
-			playerQuery = GetEntityQuery(typeof(PlayerTagComponent), typeof(Rotation));
+			playerQuery = GetEntityQuery(typeof(PlayerTag), typeof(Rotation));
 			commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
 		}
 
@@ -29,7 +29,7 @@ namespace Unity.Mathematics
 				.WithChangeFilter<CursorWorldPositionComponent>()
 				.ForEach((int entityInQueryIndex, in CursorWorldPositionComponent cursorPosition) =>
 				{
-					var rotation = GetPlayerRotation(in cursorPosition);
+					var rotation = GetNewPlayerRotation(in cursorPosition);
 					commandBuffer.SetComponent(entityInQueryIndex, playerEntity, rotation);
 				})
 				.ScheduleParallel();
@@ -37,7 +37,7 @@ namespace Unity.Mathematics
 			commandBufferSystem.AddJobHandleForProducer(Dependency);
 		}
 
-		private static Rotation GetPlayerRotation(in CursorWorldPositionComponent cursorPosition)
+		private static Rotation GetNewPlayerRotation(in CursorWorldPositionComponent cursorPosition)
 		{
 			float3 playerForward = cursorPosition.Value;
 			playerForward.y = 0;
@@ -46,12 +46,6 @@ namespace Unity.Mathematics
 				Value = quaternion.LookRotation(playerForward, new float3(0, 1, 0))
 			};
 			return rotation;
-		}
-
-		protected override void OnDestroy()
-		{
-			base.OnDestroy();
-			playerQuery.Dispose();
 		}
 	}
 }

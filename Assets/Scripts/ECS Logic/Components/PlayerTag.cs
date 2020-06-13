@@ -3,5 +3,5 @@
 namespace DefaultNamespace
 {
 	[GenerateAuthoringComponent]
-	public struct PlayerTagComponent : IComponentData { }
+	public struct PlayerTag : IComponentData { }
 }

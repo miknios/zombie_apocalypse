@@ -482,9 +482,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 7139668521868558548, guid: 49ae36ab4dec38e45aa8dabf82d26d9a,
     type: 3}
-  spawnDistance: 25
-  spawnCount: 3
-  interval: 3
+  spawnDistance: 15
+  spawnCount: 10
+  interval: 1
 --- !u!114 &1744649621
 MonoBehaviour:
   m_ObjectHideFlags: 0
