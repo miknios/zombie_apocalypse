@@ -10,7 +10,7 @@ using UnityEngine;
 [AddComponentMenu("AuthoringComponents/AroundCenterCyclicSpawner")]
 public class AroundCenterCyclicSpawnerAuthoring : MonoBehaviour, IConvertGameObjectToEntity, IDeclareReferencedPrefabs
 {
-	[SerializeField] private GameObject enemyPrefab;
+	[SerializeField] private GameObject enemyPrefab = null;
 	[SerializeField] private float spawnDistance = 25;
 	[SerializeField] private int spawnCount = 3;
 	[SerializeField] private float interval = 0.3f;

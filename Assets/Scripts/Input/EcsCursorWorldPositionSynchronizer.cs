@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EcsCursorWorldPositionSynchronizer : MonoBehaviour
 {
-	[SerializeField] private Camera mainCamera;
+	[SerializeField] private Camera mainCamera = null;
 	private EntityManager entityManager;
 	private Entity cursorEntity;
 	private readonly RaycastHit[] raycastHits = new RaycastHit[1];
