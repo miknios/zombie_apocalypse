@@ -5,6 +5,7 @@ using Unity.Mathematics;
 
 namespace DefaultNamespace
 {
+	[UpdateInGroup(typeof(InitializationSystemGroup))]
 	public class TimerStepSystem : SystemBase
 	{
 		protected override void OnUpdate()

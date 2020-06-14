@@ -484,7 +484,7 @@ MonoBehaviour:
     type: 3}
   spawnDistance: 15
   spawnCount: 10
-  interval: 1
+  interval: 0.5
 --- !u!114 &1744649621
 MonoBehaviour:
   m_ObjectHideFlags: 0

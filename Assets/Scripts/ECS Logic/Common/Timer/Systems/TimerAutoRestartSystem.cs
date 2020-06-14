@@ -3,6 +3,7 @@ using Unity.Entities;
 
 namespace DefaultNamespace
 {
+	[UpdateInGroup(typeof(LateSimulationSystemGroup))]
 	public class TimerAutoRestartSystem : SystemBase
 	{
 		private EntityCommandBufferSystem commandBufferSystem;
