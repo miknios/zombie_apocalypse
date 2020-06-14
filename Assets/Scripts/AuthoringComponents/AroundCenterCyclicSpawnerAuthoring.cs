@@ -28,7 +28,7 @@ public class AroundCenterCyclicSpawnerAuthoring : MonoBehaviour, IConvertGameObj
 
 	private void SetupSpawnerEntity(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
 	{
-		dstManager.AddComponentData(entity, new AroundCenterCyclicSpawnerComponent
+		dstManager.AddComponentData(entity, new AroundCenterCyclicSpawner
 		{
 			EntityToSpawn = conversionSystem.GetPrimaryEntity(enemyPrefab),
 			SpawnCount = spawnCount,

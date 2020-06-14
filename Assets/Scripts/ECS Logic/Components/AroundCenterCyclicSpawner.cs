@@ -2,7 +2,7 @@
 
 namespace DefaultNamespace
 {
-	public struct AroundCenterCyclicSpawnerComponent : IComponentData
+	public struct AroundCenterCyclicSpawner : IComponentData
 	{
 		public float SpawnDistance;
 		public int SpawnCount;

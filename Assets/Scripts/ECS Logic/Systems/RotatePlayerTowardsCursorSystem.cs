@@ -26,8 +26,8 @@ namespace Unity.Mathematics
 			var commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
 			
 			Entities
-				.WithChangeFilter<CursorWorldPositionComponent>()
-				.ForEach((int entityInQueryIndex, in CursorWorldPositionComponent cursorPosition) =>
+				.WithChangeFilter<CursorWorldPosition>()
+				.ForEach((int entityInQueryIndex, in CursorWorldPosition cursorPosition) =>
 				{
 					var rotation = GetNewPlayerRotation(in cursorPosition);
 					commandBuffer.SetComponent(entityInQueryIndex, playerEntity, rotation);
@@ -37,7 +37,7 @@ namespace Unity.Mathematics
 			commandBufferSystem.AddJobHandleForProducer(Dependency);
 		}
 
-		private static Rotation GetNewPlayerRotation(in CursorWorldPositionComponent cursorPosition)
+		private static Rotation GetNewPlayerRotation(in CursorWorldPosition cursorPosition)
 		{
 			float3 playerForward = cursorPosition.Value;
 			playerForward.y = 0;

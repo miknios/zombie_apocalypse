@@ -13,7 +13,7 @@ public class EcsCursorWorldPositionSynchronizer : MonoBehaviour
 	private void Awake()
 	{
 		entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-		cursorEntity = entityManager.CreateEntity(typeof(CursorWorldPositionComponent));
+		cursorEntity = entityManager.CreateEntity(typeof(CursorWorldPosition));
 		Synchronize();
 	}
 
@@ -26,7 +26,7 @@ public class EcsCursorWorldPositionSynchronizer : MonoBehaviour
 	{
 		float3 newPosition = new float3();
 		CalculateCursorWorldPosition(ref newPosition);
-		var component = new CursorWorldPositionComponent
+		var component = new CursorWorldPosition
 		{
 			Value = newPosition
 		};

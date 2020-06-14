@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace DefaultNamespace
 {
-	public struct CursorWorldPositionComponent : IComponentData
+	public struct CursorWorldPosition : IComponentData
 	{
 		public float3 Value;
 	}

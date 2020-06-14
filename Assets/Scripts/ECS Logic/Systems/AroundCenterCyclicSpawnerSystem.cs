@@ -30,7 +30,7 @@ namespace ECS_Logic.Systems
 				.ForEach((Entity entity, int nativeThreadIndex, int entityInQueryIndex, in TimerComponent timerComponent) =>
 				{
 					Entity spawnerEntity = timerComponent.Owner;
-					var spawner = GetComponent<AroundCenterCyclicSpawnerComponent>(spawnerEntity);
+					var spawner = GetComponent<AroundCenterCyclicSpawner>(spawnerEntity);
 					var randomGeneratorComponent = GetComponent<RandomGeneratorComponent>(spawnerEntity);
 					var randomGenerator = randomGeneratorComponent.Value;
 					for (int i = 0; i < spawner.SpawnCount; i++)
@@ -47,7 +47,7 @@ namespace ECS_Logic.Systems
 		}
 
 		private static void SpawnEntity(ref EntityCommandBuffer.Concurrent commandBuffer, 
-			ref AroundCenterCyclicSpawnerComponent spawner, ref Random randomGenerator, int entityInQueryIndex)
+			ref AroundCenterCyclicSpawner spawner, ref Random randomGenerator, int entityInQueryIndex)
 		{
 			var spawnedEntity = commandBuffer.Instantiate(entityInQueryIndex, spawner.EntityToSpawn);
 			float randomAngle = randomGenerator.NextFloat() * math.PI * 2;
@@ -58,7 +58,7 @@ namespace ECS_Logic.Systems
 			commandBuffer.SetComponent(entityInQueryIndex, spawnedEntity, translation);
 		}
 
-		private static float3 GetRandomPosition(float randomAngle, ref AroundCenterCyclicSpawnerComponent spawner)
+		private static float3 GetRandomPosition(float randomAngle, ref AroundCenterCyclicSpawner spawner)
 		{
 			return new float3
 			{
