@@ -41,10 +41,7 @@ namespace DefaultNamespace
 					float3 playerPosition = GetComponent<Translation>(playerEntity).Value;
 					float3 currentPosition = translation.Value;
 					float3 direction = math.normalize(playerPosition - currentPosition);
-					currentVelocity = new CurrentVelocity
-					{
-						Value = direction * baseSpeedComponent.Value
-					};
+					currentVelocity.Value = direction * baseSpeedComponent.Value;
 				})
 				.ScheduleParallel();
 		}

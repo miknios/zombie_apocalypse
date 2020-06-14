@@ -12,7 +12,7 @@ namespace DefaultNamespace
 			base.OnCreate();
 			
 			commandBufferSystem = World.DefaultGameObjectInjectionWorld
-				.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+				.GetOrCreateSystem<BeginSimulationEntityCommandBufferSystem>();
 		}
 
 		protected override void OnUpdate()
