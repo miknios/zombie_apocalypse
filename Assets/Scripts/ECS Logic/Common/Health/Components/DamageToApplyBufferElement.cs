@@ -4,6 +4,6 @@ namespace ECS_Logic.Common.Health.Components
 {
 	public struct DamageToApplyBufferElement : IBufferElementData
 	{
-		public float Value;
+		public int Value;
 	}
 }
