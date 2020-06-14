@@ -1,6 +1,7 @@
 ﻿using DefaultNamespace;
 using ECS_Logic.Common.Health.Components;
 using Unity.Entities;
+using Unity.Mathematics;
 
 namespace ECS_Logic.Common.Health.Systems
 {
@@ -19,7 +20,7 @@ namespace ECS_Logic.Common.Health.Systems
 					}
 					damageBuffer.Clear();
 
-					healthPoints.Value -= damage;
+					healthPoints.Value = math.max(healthPoints.Value - damage, 0);
 				})
 				.ScheduleParallel();
 		}

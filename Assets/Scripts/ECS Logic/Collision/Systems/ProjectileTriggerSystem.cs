@@ -1,11 +1,12 @@
 ﻿using ECS_Logic.Common.Collision.Components;
 using ECS_Logic.Common.Health.Components;
+using ECS_Logic.TagComponents;
 using Unity.Entities;
 
 namespace DefaultNamespace
 {
 	[UpdateBefore(typeof(EndSimulationEntityCommandBufferSystem))]
-	public class EnemyTriggerSystem : SystemBase
+	public class ProjectileTriggerSystem : SystemBase
 	{
 		private EntityCommandBufferSystem commandBufferSystem;
 
@@ -17,20 +18,20 @@ namespace DefaultNamespace
 
 		protected override void OnUpdate()
 		{
-			EntityCommandBuffer.Concurrent commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
+			var commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
 
 			Entities
-				.WithAll<EnemyTag>()
-				.ForEach((int entityInQueryIndex, Entity enemyEntity,
+				.ForEach((int entityInQueryIndex, Entity projectileEntity, in Projectile projectile,
 					in DynamicBuffer<TriggerCollisionBufferElement> collisionBuffer) =>
 				{
 					if (collisionBuffer.Length == 0)
 						return;
 
-					commandBuffer.DestroyEntity(entityInQueryIndex, enemyEntity);
+					commandBuffer.DestroyEntity(entityInQueryIndex, projectileEntity);
 					Entity hitEntity = collisionBuffer[0].HitboxEntity;
 					
-					commandBuffer.AppendToBuffer(entityInQueryIndex, hitEntity, new DamageToApplyBufferElement{Value = 50});
+					commandBuffer.AppendToBuffer(entityInQueryIndex, hitEntity, 
+						new DamageToApplyBufferElement {Value = projectile.Damage});
 				})
 				.ScheduleParallel();
 			

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ECS_Logic.Weapons.Components;
 using Unity.Entities;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace ECS_Logic.Common.Collision.Components
 	{
 		[SerializeField] private GameObject projectilePrefab;
 		[SerializeField] private KeyCode keyToTrigger;
+		[SerializeField] private float projectileSpeed;
 
 		public void DeclareReferencedPrefabs(List<GameObject> referencedPrefabs)
 		{
@@ -15,10 +17,12 @@ namespace ECS_Logic.Common.Collision.Components
 		}
 		public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
 		{
-			// TODO: create gun entity with parameters and projectile prefab entity 
-			// then think how to assign controls for shooting - set system field, keep keycode as component or maybe blob asset
-			// maybe it's not important right now so let's try setting system field and doing if(input is pressed) -> run shoot job
-			
+			dstManager.AddComponentData(entity, new Gun
+			{
+				KeyCode = keyToTrigger,
+				ProjectileEntity = conversionSystem.GetPrimaryEntity(projectilePrefab),
+				ProjectileSpeed = projectileSpeed
+			});
 		}
 	}
 }
