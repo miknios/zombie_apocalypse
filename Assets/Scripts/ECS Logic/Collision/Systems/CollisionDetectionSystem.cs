@@ -89,7 +89,7 @@ namespace DefaultNamespace
 		private static uint GetCellHash(float3 position)
 		{
 			float cellSize = 40;
-			return math.hash(math.floor((position.xy - new float2(cellSize)) / cellSize));
+			return math.hash(math.floor((position.xy - new float2(cellSize) / 2) / cellSize));
 		}
 
 		private static bool CirclesAreIntersecting(float3 center1, float radius1, float3 center2, float radius2)
