@@ -21,14 +21,14 @@ namespace DefaultNamespace
 			var commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
 
 			Entities
-				.WithAll<TimeOutComponent>()
-				.ForEach((Entity entity, int entityInQueryIndex, ref TimerComponent timerComponent) =>
+				.WithAll<Timeout>()
+				.ForEach((Entity entity, int entityInQueryIndex, ref Timer timerComponent) =>
 				{
 					if(!timerComponent.AutoRestart)
 						return;
 
 					timerComponent.CurrentTime = timerComponent.InitialTime;
-					commandBuffer.RemoveComponent<TimeOutComponent>(entityInQueryIndex, entity);
+					commandBuffer.RemoveComponent<Timeout>(entityInQueryIndex, entity);
 				})
 				.ScheduleParallel();
 			

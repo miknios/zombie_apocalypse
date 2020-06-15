@@ -2,7 +2,6 @@
 using ECS_Logic.Common.Collision.Components;
 using ECS_Logic.Common.Health.Components;
 using ECS_Logic.TagComponents;
-using Unity.Collections;
 using Unity.Entities;
 
 namespace DefaultNamespace

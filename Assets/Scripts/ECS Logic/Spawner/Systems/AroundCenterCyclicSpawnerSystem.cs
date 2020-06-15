@@ -14,20 +14,18 @@ namespace ECS_Logic.Systems
 		private EntityCommandBufferSystem commandBufferSystem;
 
 		protected override void OnCreate()
-		{
-			base.OnCreate();
-
-			commandBufferSystem = World.DefaultGameObjectInjectionWorld
-				.GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
-		}
+         		{
+         			commandBufferSystem = World.DefaultGameObjectInjectionWorld
+         				.GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
+         		}
 
 		protected override void OnUpdate()
 		{
 			var commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
 			
 			Entities
-				.WithAll<TimeOutComponent, AroundCenterCyclicSpawnerTimerComponent>()
-				.ForEach((Entity entity, int nativeThreadIndex, int entityInQueryIndex, in TimerComponent timerComponent) =>
+				.WithAll<Timeout, AroundCenterCyclicSpawnerTimerComponent>()
+				.ForEach((Entity entity, int entityInQueryIndex, in Timer timerComponent) =>
 				{
 					Entity spawnerEntity = timerComponent.Owner;
 					var spawner = GetComponent<AroundCenterCyclicSpawner>(spawnerEntity);

@@ -2,5 +2,5 @@
 
 namespace DefaultNamespace.ECS_Logic.Common.Components
 {
-	public struct EnabledComponent : IComponentData { }
+	public struct Enabled : IComponentData { }
 }

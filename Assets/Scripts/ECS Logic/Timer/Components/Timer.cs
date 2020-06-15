@@ -2,7 +2,7 @@
 
 namespace DefaultNamespace.ECS_Logic.Timer.Components
 {
-	public struct TimerComponent : IComponentData
+	public struct Timer : IComponentData
 	{
 		public float InitialTime;
 		public float CurrentTime;

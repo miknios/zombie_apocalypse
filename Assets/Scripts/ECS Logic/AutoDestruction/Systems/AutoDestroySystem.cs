@@ -1,33 +1,28 @@
 ﻿using DefaultNamespace.ECS_Logic.Timer.Components;
-using ECS_Logic;
+using ECS_Logic.AutoDestruction.Components;
 using Unity.Entities;
 
-namespace DefaultNamespace
+namespace ECS_Logic.AutoDestruction.Systems
 {
-	[UpdateInGroup(typeof(ApplySelfContainedDataSystemGroup))]
-	[UpdateAfter(typeof(TimerStepSystem))]
-	public class TimerTimeoutSystem : SystemBase
+	public class AutoDestroySystem : SystemBase
 	{
 		private EntityCommandBufferSystem commandBufferSystem;
-
+		
 		protected override void OnCreate()
 		{
-			base.OnCreate();
-			
 			commandBufferSystem = World.DefaultGameObjectInjectionWorld
 				.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
 		}
-
+		
 		protected override void OnUpdate()
 		{
 			var commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
 			
 			Entities
-				.WithChangeFilter<Timer>()
-				.ForEach((Entity entity, int entityInQueryIndex, in Timer timerComponent) =>
+				.WithAll<Timeout, AutoDestroyTimer>()
+				.ForEach((Entity entity, int entityInQueryIndex) =>
 				{
-					if(timerComponent.CurrentTime == 0)
-						commandBuffer.AddComponent<Timeout>(entityInQueryIndex, entity);
+					commandBuffer.DestroyEntity(entityInQueryIndex, entity);
 				})
 				.ScheduleParallel();
 			

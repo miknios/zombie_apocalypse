@@ -2,5 +2,5 @@
 
 namespace DefaultNamespace.ECS_Logic.Timer.Components
 {
-	public struct TimeOutComponent : IComponentData { }
+	public struct Timeout : IComponentData { }
 }

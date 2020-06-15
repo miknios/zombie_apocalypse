@@ -43,7 +43,7 @@ public class AroundCenterCyclicSpawnerAuthoring : MonoBehaviour, IConvertGameObj
 	private void SetupSpawnerTimerEntity(Entity entity, EntityManager dstManager)
 	{
 		var timerEntity = dstManager.CreateEntity();
-		dstManager.AddComponentData(timerEntity, new TimerComponent
+		dstManager.AddComponentData(timerEntity, new Timer
 		{
 			AutoRestart = true,
 			InitialTime = interval,
@@ -51,6 +51,6 @@ public class AroundCenterCyclicSpawnerAuthoring : MonoBehaviour, IConvertGameObj
 			Owner = entity
 		});
 		dstManager.AddComponent<AroundCenterCyclicSpawnerTimerComponent>(timerEntity);
-		dstManager.AddComponent<EnabledComponent>(timerEntity);
+		dstManager.AddComponent<Enabled>(timerEntity);
 	}
 }

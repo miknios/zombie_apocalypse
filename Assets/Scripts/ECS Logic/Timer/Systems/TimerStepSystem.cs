@@ -14,8 +14,8 @@ namespace DefaultNamespace
 			float deltaTime = Time.DeltaTime;
 
 			Entities
-				.ForEach((int entityInQueryIndex, ref TimerComponent timerComponent, 
-					in EnabledComponent enabledComponent) =>
+				.ForEach((int entityInQueryIndex, ref Timer timerComponent, 
+					in Enabled enabledComponent) =>
 				{
 					float newCurrentTime = timerComponent.CurrentTime - deltaTime;
 					newCurrentTime = math.max(0, newCurrentTime);
