@@ -8,7 +8,7 @@ using UnityEngine;
 using Random = System.Random;
 
 [RequiresEntityConversion]
-[AddComponentMenu("AuthoringComponents/AroundCenterCyclicSpawner")]
+[AddComponentMenu("AuthoringComponents/AroundCenterCyclicSpawnser")]
 public class AroundCenterCyclicSpawnerAuthoring : MonoBehaviour, IConvertGameObjectToEntity, IDeclareReferencedPrefabs
 {
 	[SerializeField] private GameObject enemyPrefab = null;

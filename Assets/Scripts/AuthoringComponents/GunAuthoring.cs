@@ -7,9 +7,9 @@ namespace ECS_Logic.Common.Collision.Components
 {
 	public class GunAuthoring : MonoBehaviour, IConvertGameObjectToEntity, IDeclareReferencedPrefabs
 	{
-		[SerializeField] private GameObject projectilePrefab;
-		[SerializeField] private KeyCode keyToTrigger;
-		[SerializeField] private float projectileSpeed;
+		[SerializeField] private GameObject projectilePrefab = null;
+		[SerializeField] private KeyCode keyToTrigger = KeyCode.Mouse0;
+		[SerializeField] private float projectileSpeed = 40;
 
 		public void DeclareReferencedPrefabs(List<GameObject> referencedPrefabs)
 		{

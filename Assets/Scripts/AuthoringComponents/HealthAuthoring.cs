@@ -6,7 +6,7 @@ namespace ECS_Logic.Common.Collision.Components
 {
 	public class HealthAuthoring : MonoBehaviour, IConvertGameObjectToEntity
 	{
-		[SerializeField] private int healthPoints;
+		[SerializeField] private int healthPoints = 100;
 		
 		public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
 		{

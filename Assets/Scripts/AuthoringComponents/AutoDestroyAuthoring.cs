@@ -8,7 +8,7 @@ namespace ECS_Logic.Common.Collision.Components
 {
 	public class AutoDestroyAuthoring : MonoBehaviour, IConvertGameObjectToEntity
 	{
-		[SerializeField] private float destroyAfterSeconds;
+		[SerializeField] private float destroyAfterSeconds = 0.625f;
 		
 		public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
 		{
