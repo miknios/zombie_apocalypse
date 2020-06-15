@@ -88,7 +88,7 @@ namespace DefaultNamespace
 
 		private static uint GetCellHash(float3 position)
 		{
-			float cellSize = 40;
+			float cellSize = 2;
 			return math.hash(math.floor((position.xy - new float2(cellSize) / 2) / cellSize));
 		}
 
