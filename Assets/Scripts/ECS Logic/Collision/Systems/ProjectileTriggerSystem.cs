@@ -2,24 +2,30 @@
 using ECS_Logic.Common.Collision.Components;
 using ECS_Logic.Common.Health.Components;
 using ECS_Logic.TagComponents;
+using Unity.Collections;
 using Unity.Entities;
 
 namespace DefaultNamespace
 {
-	[UpdateBefore(typeof(CollisionDependentSystemGroup))]
+	[UpdateInGroup(typeof(CollisionDependentSystemGroup))]
 	public class ProjectileTriggerSystem : SystemBase
 	{
-		private EntityCommandBufferSystem commandBufferSystem;
+		private EntityCommandBufferSystem appendCommandBufferSystem;
+		private EntityCommandBufferSystem destroyCommandBufferSystem;
 
 		protected override void OnCreate()
 		{
-			commandBufferSystem = World.DefaultGameObjectInjectionWorld
+			appendCommandBufferSystem = World.DefaultGameObjectInjectionWorld
+				.GetOrCreateSystem<CollisionDataAppendEntityCommandBufferSystem>();
+			destroyCommandBufferSystem = World.DefaultGameObjectInjectionWorld
 				.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+			GetEntityQuery(ComponentType.ReadWrite<HitboxArea>());
 		}
 
 		protected override void OnUpdate()
 		{
-			var commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
+			var appendCommandBuffer = appendCommandBufferSystem.CreateCommandBuffer().ToConcurrent();
+			var destroyCommandBuffer = destroyCommandBufferSystem.CreateCommandBuffer().ToConcurrent();
 
 			Entities
 				.ForEach((int entityInQueryIndex, Entity projectileEntity, in Projectile projectile,
@@ -28,15 +34,16 @@ namespace DefaultNamespace
 					if (collisionBuffer.Length == 0)
 						return;
 
-					commandBuffer.DestroyEntity(entityInQueryIndex, projectileEntity);
+					destroyCommandBuffer.DestroyEntity(entityInQueryIndex, projectileEntity);
 					Entity hitEntity = collisionBuffer[0].HitboxEntity;
 					
-					commandBuffer.AppendToBuffer(entityInQueryIndex, hitEntity, 
+					appendCommandBuffer.AppendToBuffer(entityInQueryIndex, hitEntity, 
 						new DamageToApplyBufferElement {Value = projectile.Damage});
 				})
 				.ScheduleParallel();
 			
-			commandBufferSystem.AddJobHandleForProducer(Dependency);
+			appendCommandBufferSystem.AddJobHandleForProducer(Dependency);
+			destroyCommandBufferSystem.AddJobHandleForProducer(Dependency);
 		}
 	}
 }
