@@ -18,7 +18,7 @@ namespace ECS_Logic
 	public class UpdateSimulationDataSystemGroup : ComponentSystemGroup { }
 
 	[UnityEngine.ExecuteAlways]
-	[UpdateInGroup(typeof(SimulationSystemGroup), OrderLast = true)]
+	[UpdateInGroup(typeof(SimulationSystemGroup), OrderFirst = true)]
 	[UpdateAfter(typeof(UpdateSimulationDataSystemGroup))]
 	public class ContextWideDataDependentSystemGroup : ComponentSystemGroup { }
 	
