@@ -2,6 +2,7 @@
 using ECS_Logic.Common.Collision.Components;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
 
@@ -10,54 +11,85 @@ namespace DefaultNamespace
 	[UpdateInGroup(typeof(CollisionDetectionSystemGroup))]
 	public class CollisionDetectionSystem : SystemBase
 	{
-		private EntityQuery hitboxAreaQuery;
-
-		protected override void OnCreate()
+		struct HitboxCollisionDetectionData
 		{
-			hitboxAreaQuery = GetEntityQuery(
-				ComponentType.ReadOnly(typeof(HitboxArea)),
-				ComponentType.ReadOnly(typeof(Translation)));
+			public float3 Position;
+			public float Radius;
+			public CollisionLayer CollisionLayer;
+			public Entity Entity;
 		}
+
+		private EntityQuery hitboxQuery;
+		private EntityQuery triggerQuery;
 
 		protected override void OnUpdate()
 		{
-			if(hitboxAreaQuery.IsEmptyIgnoreFilter)
-				return;
-			
-			var hitboxEntities = hitboxAreaQuery.ToEntityArray(Allocator.TempJob);
+			int hitboxCount = hitboxQuery.CalculateEntityCount();
+			NativeMultiHashMap<uint, HitboxCollisionDetectionData> hitboxDataForCellHash =
+				new NativeMultiHashMap<uint, HitboxCollisionDetectionData>(hitboxCount, Allocator.TempJob);
+			var parallelHashMap = hitboxDataForCellHash.AsParallelWriter();
 
-			Entities
-				.ForEach(
-					(int entityInQueryIndex, ref DynamicBuffer<TriggerCollisionBufferElement> triggerCollisionBuffer, 
-						in TriggerArea triggerArea, in Translation translation) =>
+			var hitboxHashMapJobHandle = Entities
+				.WithStoreEntityQueryInField(ref hitboxQuery)
+				.ForEach((Entity entity, in HitboxArea hitboxArea, in LocalToWorld localToWorld) =>
+				{
+					parallelHashMap.Add(GetCellHash(localToWorld.Position), new HitboxCollisionDetectionData
 					{
-						for (int i = 0; i < hitboxEntities.Length; i++)
-						{
-							Entity hitboxEntity = hitboxEntities[i];
-							HitboxArea hitboxArea = GetComponent<HitboxArea>(hitboxEntity);
-							if (hitboxArea.CollisionLayer != triggerArea.CollisionLayer)
-								continue;
+						CollisionLayer = hitboxArea.CollisionLayer,
+						Entity = entity,
+						Position = localToWorld.Position,
+						Radius = hitboxArea.Radius
+					});
+				})
+				.ScheduleParallel(Dependency);
 
-							float3 hitboxPosition = GetComponent<Translation>(hitboxEntity).Value;
-							float hitboxRadius = hitboxArea.Radius;
-							if (!CirclesAreIntersecting(hitboxPosition, hitboxRadius, translation.Value,
-								triggerArea.Radius))
-								continue;
+			int triggerCount = triggerQuery.CalculateEntityCount();
+			NativeArray<uint> triggerCellHashArray = new NativeArray<uint>(triggerCount, Allocator.TempJob);
 
-							bool isPresentInBuffer = false;
-							for (int j = 0; j < triggerCollisionBuffer.Length; j++)
-							{
-								if (triggerCollisionBuffer[j] == hitboxEntity)
-									isPresentInBuffer = true;
-							}
-							if(isPresentInBuffer)
-								continue;
-							
-							triggerCollisionBuffer.Add(hitboxEntities[i]);
-						}
-					})
-				.WithDeallocateOnJobCompletion(hitboxEntities)
-				.ScheduleParallel();
+			var triggerArrayJobHandle = Entities
+				.WithStoreEntityQueryInField(ref triggerQuery)
+				.ForEach((int entityInQueryIndex, in TriggerArea triggerArea, in LocalToWorld localToWorld) =>
+				{
+					triggerCellHashArray[entityInQueryIndex] = GetCellHash(localToWorld.Position);
+				})
+				.ScheduleParallel(Dependency);
+
+			var combinedJobHandles = JobHandle.CombineDependencies(hitboxHashMapJobHandle, triggerArrayJobHandle);
+
+			var collisionDetectionJobHandle = Entities
+				.WithReadOnly(triggerCellHashArray)
+				.WithReadOnly(hitboxDataForCellHash)
+				.ForEach((int entityInQueryIndex, ref DynamicBuffer<TriggerCollisionBufferElement> collisionBuffer, 
+					in TriggerArea triggerArea, in LocalToWorld localToWorld) =>
+				{
+					var triggerCellHash = triggerCellHashArray[entityInQueryIndex];
+					var hitboxDataForCell = hitboxDataForCellHash.GetValuesForKey(triggerCellHash);
+					while (hitboxDataForCell.MoveNext())
+					{
+						var hitboxData = hitboxDataForCell.Current;
+						
+						if(triggerArea.CollisionLayer != hitboxData.CollisionLayer)
+							continue;
+
+						if(!CirclesAreIntersecting(localToWorld.Position, triggerArea.Radius, 
+							hitboxData.Position, hitboxData.Radius))
+							continue;
+
+						collisionBuffer.Add(new TriggerCollisionBufferElement {HitboxEntity = hitboxData.Entity});
+					}
+				})
+				.ScheduleParallel(combinedJobHandles);
+
+			Dependency = collisionDetectionJobHandle;
+			var disposeJobHandle = triggerCellHashArray.Dispose(Dependency);
+			disposeJobHandle = JobHandle.CombineDependencies(disposeJobHandle, hitboxDataForCellHash.Dispose(Dependency));
+			Dependency = disposeJobHandle;
+		}
+
+		private static uint GetCellHash(float3 position)
+		{
+			float cellSize = 40;
+			return math.hash(math.floor((position.xy - new float2(cellSize)) / cellSize));
 		}
 
 		private static bool CirclesAreIntersecting(float3 center1, float radius1, float3 center2, float radius2)
