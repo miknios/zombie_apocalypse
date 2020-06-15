@@ -1,10 +1,11 @@
-﻿using ECS_Logic.Common.Collision.Components;
+﻿using ECS_Logic;
+using ECS_Logic.Common.Collision.Components;
 using ECS_Logic.Common.Health.Components;
 using Unity.Entities;
 
 namespace DefaultNamespace
 {
-	[UpdateBefore(typeof(EndSimulationEntityCommandBufferSystem))]
+	[UpdateBefore(typeof(CollisionDependentSystemGroup))]
 	public class EnemyTriggerSystem : SystemBase
 	{
 		private EntityCommandBufferSystem commandBufferSystem;
@@ -17,7 +18,7 @@ namespace DefaultNamespace
 
 		protected override void OnUpdate()
 		{
-			EntityCommandBuffer.Concurrent commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
+			var commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
 
 			Entities
 				.WithAll<EnemyTag>()

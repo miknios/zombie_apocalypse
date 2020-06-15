@@ -1,12 +1,13 @@
-﻿using ECS_Logic.Common.Move.Components;
+﻿using ECS_Logic;
+using ECS_Logic.Common.Move.Components;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
 namespace DefaultNamespace
 {
-	[UpdateBefore(typeof(ApplyVelocitySystem))]
-	public class MoveTowardsPlayerSystem : SystemBase
+	[UpdateInGroup(typeof(UpdateSimulationDataSystemGroup))]
+	public class UpdateVelocityToMoveTowardsPlayerSystem : SystemBase
 	{
 		private EntityQuery playerEntityQuery;
 		private EntityCommandBufferSystem commandBufferSystem;

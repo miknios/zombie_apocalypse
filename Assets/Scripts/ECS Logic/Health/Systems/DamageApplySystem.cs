@@ -5,7 +5,7 @@ using Unity.Mathematics;
 
 namespace ECS_Logic.Common.Health.Systems
 {
-	[UpdateAfter(typeof(EnemyTriggerSystem))]
+	[UpdateInGroup(typeof(ApplySelfContainedDataSystemGroup))]
 	public class DamageApplySystem : SystemBase
 	{
 		protected override void OnUpdate()

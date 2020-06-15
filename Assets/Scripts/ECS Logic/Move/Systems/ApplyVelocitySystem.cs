@@ -1,4 +1,5 @@
-﻿using ECS_Logic.Common.Move.Components;
+﻿using ECS_Logic;
+using ECS_Logic.Common.Move.Components;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -6,6 +7,7 @@ using Unity.Transforms;
 
 namespace DefaultNamespace
 {
+	[UpdateInGroup(typeof(ApplySelfContainedDataSystemGroup))]
 	public class ApplyVelocitySystem : SystemBase
 	{
 		[BurstCompile]

@@ -3,7 +3,7 @@ using Unity.Entities;
 
 namespace DefaultNamespace
 {
-	[UpdateInGroup(typeof(LateSimulationSystemGroup))]
+	[UpdateInGroup(typeof(LateSimulationSystemGroup), OrderLast = true)]
 	public class TimerAutoRestartSystem : SystemBase
 	{
 		private EntityCommandBufferSystem commandBufferSystem;
@@ -13,7 +13,7 @@ namespace DefaultNamespace
 			base.OnCreate();
 
 			commandBufferSystem = World.DefaultGameObjectInjectionWorld
-				.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+				.GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
 		}
 
 		protected override void OnUpdate()

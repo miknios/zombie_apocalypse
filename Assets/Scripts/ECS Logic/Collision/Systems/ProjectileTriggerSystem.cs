@@ -1,11 +1,12 @@
-﻿using ECS_Logic.Common.Collision.Components;
+﻿using ECS_Logic;
+using ECS_Logic.Common.Collision.Components;
 using ECS_Logic.Common.Health.Components;
 using ECS_Logic.TagComponents;
 using Unity.Entities;
 
 namespace DefaultNamespace
 {
-	[UpdateBefore(typeof(EndSimulationEntityCommandBufferSystem))]
+	[UpdateBefore(typeof(CollisionDependentSystemGroup))]
 	public class ProjectileTriggerSystem : SystemBase
 	{
 		private EntityCommandBufferSystem commandBufferSystem;

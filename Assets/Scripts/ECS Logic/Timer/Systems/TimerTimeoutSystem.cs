@@ -1,9 +1,10 @@
 ﻿using DefaultNamespace.ECS_Logic.Timer.Components;
+using ECS_Logic;
 using Unity.Entities;
 
 namespace DefaultNamespace
 {
-	[UpdateInGroup(typeof(InitializationSystemGroup))]
+	[UpdateInGroup(typeof(ApplySelfContainedDataSystemGroup))]
 	[UpdateAfter(typeof(TimerStepSystem))]
 	public class TimerTimeoutSystem : SystemBase
 	{
@@ -14,7 +15,7 @@ namespace DefaultNamespace
 			base.OnCreate();
 			
 			commandBufferSystem = World.DefaultGameObjectInjectionWorld
-				.GetOrCreateSystem<BeginSimulationEntityCommandBufferSystem>();
+				.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
 		}
 
 		protected override void OnUpdate()

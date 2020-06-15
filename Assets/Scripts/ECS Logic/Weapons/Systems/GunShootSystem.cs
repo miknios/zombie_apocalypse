@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace ECS_Logic.Weapons.Systems
 {
+	[UpdateInGroup(typeof(ContinousWorkProducerSystemGroup))]
 	public class GunShootSystem : SystemBase
 	{
 		private EntityCommandBufferSystem commandBufferSystem;
@@ -14,7 +15,7 @@ namespace ECS_Logic.Weapons.Systems
 		protected override void OnCreate()
 		{
 			commandBufferSystem = World.DefaultGameObjectInjectionWorld
-				.GetOrCreateSystem<BeginSimulationEntityCommandBufferSystem>();
+				.GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
 		}
 
 		protected override void OnUpdate()

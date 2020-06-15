@@ -1,9 +1,11 @@
 ﻿using DefaultNamespace;
+using ECS_Logic;
 using Unity.Entities;
 using Unity.Transforms;
 
 namespace Unity.Mathematics
 {
+	[UpdateInGroup(typeof(ContextWideDataDependentSystemGroup))]
 	public class RotatePlayerTowardsCursorSystem : SystemBase
 	{
 		private EntityQuery playerQuery;

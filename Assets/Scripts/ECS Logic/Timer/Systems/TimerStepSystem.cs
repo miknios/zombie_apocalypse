@@ -1,11 +1,12 @@
 ﻿using DefaultNamespace.ECS_Logic.Common.Components;
 using DefaultNamespace.ECS_Logic.Timer.Components;
+using ECS_Logic;
 using Unity.Entities;
 using Unity.Mathematics;
 
 namespace DefaultNamespace
 {
-	[UpdateInGroup(typeof(InitializationSystemGroup))]
+	[UpdateInGroup(typeof(ApplySelfContainedDataSystemGroup))]
 	public class TimerStepSystem : SystemBase
 	{
 		protected override void OnUpdate()

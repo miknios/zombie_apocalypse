@@ -1,4 +1,5 @@
-﻿using ECS_Logic.Common.Collision.Components;
+﻿using ECS_Logic;
+using ECS_Logic.Common.Collision.Components;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -6,6 +7,7 @@ using Unity.Transforms;
 
 namespace DefaultNamespace
 {
+	[UpdateInGroup(typeof(CollisionDetectionSystemGroup))]
 	public class CollisionDetectionSystem : SystemBase
 	{
 		private EntityQuery hitboxAreaQuery;

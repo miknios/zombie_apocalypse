@@ -8,7 +8,7 @@ using Unity.Transforms;
 
 namespace ECS_Logic.Systems
 {
-	[UpdateBefore(typeof(TimerAutoRestartSystem))]
+	[UpdateInGroup(typeof(ContinousWorkProducerSystemGroup))]
 	public class AroundCenterCyclicSpawnerSystem : SystemBase
 	{
 		private EntityCommandBufferSystem commandBufferSystem;
@@ -18,7 +18,7 @@ namespace ECS_Logic.Systems
 			base.OnCreate();
 
 			commandBufferSystem = World.DefaultGameObjectInjectionWorld
-				.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+				.GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
 		}
 
 		protected override void OnUpdate()
