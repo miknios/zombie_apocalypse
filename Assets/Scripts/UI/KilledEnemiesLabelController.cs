@@ -6,7 +6,7 @@ using Zenject;
 [RequireComponent(typeof(TMP_Text))]
 public class KilledEnemiesLabelController : MonoBehaviour
 {
-	[Inject] private SignalBus signalBus;
+	[Inject] private SignalBus signalBus = null;
 	private TMP_Text text;
 	
 	private void Awake()

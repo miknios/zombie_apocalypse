@@ -946,6 +946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0c7310f0164a9fab66ac140369f551, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  difficultyConfig: {fileID: 11400000, guid: 036e0ff05dd2ef349ab2ade69338ae03, type: 2}
 --- !u!1 &1424551640
 GameObject:
   m_ObjectHideFlags: 0
@@ -1027,11 +1028,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1436c3e9fb644a4d8c41e26909c5370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 7139668521868558548, guid: 49ae36ab4dec38e45aa8dabf82d26d9a,
-    type: 3}
-  spawnDistance: 15
-  spawnCount: 1000
-  interval: 1
 --- !u!114 &1744649621
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,20 +5,18 @@ using DefaultNamespace.ECS_Logic.Timer.Components;
 using DefaultNamespace.ECS_Logic.Timer.Components.TimerTypes;
 using Unity.Entities;
 using UnityEngine;
+using Zenject;
 using Random = System.Random;
 
 [RequiresEntityConversion]
 [AddComponentMenu("AuthoringComponents/AroundCenterCyclicSpawnser")]
 public class AroundCenterCyclicSpawnerAuthoring : MonoBehaviour, IConvertGameObjectToEntity, IDeclareReferencedPrefabs
 {
-	[SerializeField] private GameObject enemyPrefab = null;
-	[SerializeField] private float spawnDistance = 25;
-	[SerializeField] private int spawnCount = 3;
-	[SerializeField] private float interval = 0.3f;
+	[Inject] private SpawnerConfig spawnerConfig = null;
 
 	public void DeclareReferencedPrefabs(List<GameObject> referencedPrefabs)
 	{
-		referencedPrefabs.Add(enemyPrefab);
+		referencedPrefabs.Add(spawnerConfig.EnemyPrefab);
 	}
 	public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
 	{
@@ -30,9 +28,9 @@ public class AroundCenterCyclicSpawnerAuthoring : MonoBehaviour, IConvertGameObj
 	{
 		dstManager.AddComponentData(entity, new AroundCenterCyclicSpawner
 		{
-			EntityToSpawn = conversionSystem.GetPrimaryEntity(enemyPrefab),
-			SpawnCount = spawnCount,
-			SpawnDistance = spawnDistance
+			EntityToSpawn = conversionSystem.GetPrimaryEntity(spawnerConfig.EnemyPrefab),
+			SpawnCount = spawnerConfig.SpawnCount,
+			SpawnDistance = spawnerConfig.DistanceFromPlayer
 		});
 
 		Random random = new Random();
@@ -46,8 +44,8 @@ public class AroundCenterCyclicSpawnerAuthoring : MonoBehaviour, IConvertGameObj
 		dstManager.AddComponentData(timerEntity, new Timer
 		{
 			AutoRestart = true,
-			InitialTime = interval,
-			CurrentTime = interval,
+			InitialTime = spawnerConfig.SpawnInterval,
+			CurrentTime = spawnerConfig.SpawnInterval,
 			Owner = entity
 		});
 		dstManager.AddComponent<AroundCenterCyclicSpawnerTimerComponent>(timerEntity);

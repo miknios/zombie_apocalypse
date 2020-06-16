@@ -14,7 +14,7 @@ namespace ECS_Logic.DataTrack
 		private NativeArray<int> sumArray;
 		private EntityQuery killedEnemiesCountQuery;
 		private EntityCommandBufferSystem commandBufferSystem;
-		[Inject] private SignalBus signalBus;
+		[Inject] private SignalBus signalBus = null;
 
 		protected override void OnCreate()
 		{

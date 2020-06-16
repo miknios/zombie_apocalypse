@@ -5,7 +5,7 @@ namespace DefaultNamespace
 {
 	public class WorldInitialization : IInitializable
 	{
-		[Inject] private DiContainer diContainer;
+		[Inject] private DiContainer diContainer = null;
 		
 		public void Initialize()
 		{
