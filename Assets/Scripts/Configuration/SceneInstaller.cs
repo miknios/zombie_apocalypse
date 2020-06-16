@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Signals;
+using UnityEngine;
 using UnityEngine.Rendering;
 using Zenject;
 
@@ -30,6 +31,7 @@ namespace DefaultNamespace
 		{
 			SignalBusInstaller.Install(Container);
 			Container.DeclareSignal<KilledEnemySignal>();
+			Container.DeclareSignal<GameOverSignal>();
 		}
 	}
 }

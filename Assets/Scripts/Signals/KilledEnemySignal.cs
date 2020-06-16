@@ -1,4 +1,4 @@
-﻿namespace UnityEngine.Rendering
+﻿namespace Signals
 {
 	public struct KilledEnemySignal
 	{

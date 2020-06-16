@@ -1,6 +1,7 @@
 ﻿using DefaultNamespace;
 using ECS_Logic.Common.Health.Components;
 using ECS_Logic.DataTrack.Components;
+using Signals;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.Rendering;
