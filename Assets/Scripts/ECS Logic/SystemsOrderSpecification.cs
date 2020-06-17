@@ -30,9 +30,4 @@ namespace ECS_Logic
 	[UpdateInGroup(typeof(LateSimulationSystemGroup), OrderLast = true)]
 	[UpdateAfter(typeof(CollisionDetectionSystemGroup))]
 	public class CollisionDependentSystemGroup : ComponentSystemGroup { }
-	
-	[UnityEngine.ExecuteAlways]
-	[UpdateInGroup(typeof(SimulationSystemGroup), OrderLast = true)]
-	[UpdateBefore(typeof(EndSimulationEntityCommandBufferSystem))]
-	public class CollisionDataAppendEntityCommandBufferSystem : EntityCommandBufferSystem { }
 }
