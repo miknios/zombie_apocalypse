@@ -18,7 +18,7 @@ namespace DefaultNamespace
 				.GetOrCreateSystem<CollisionDataAppendEntityCommandBufferSystem>();
 			destroyCommandBufferSystem = World.DefaultGameObjectInjectionWorld
 				.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
-			GetEntityQuery(ComponentType.ReadWrite<HitboxArea>());
+			RequireForUpdate(GetEntityQuery(ComponentType.ReadWrite<HitboxArea>()));
 		}
 
 		protected override void OnUpdate()

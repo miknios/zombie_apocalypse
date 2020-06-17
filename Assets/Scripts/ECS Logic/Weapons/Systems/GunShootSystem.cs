@@ -25,7 +25,7 @@ namespace ECS_Logic.Weapons.Systems
 			Entities
 				.ForEach((in Gun gun, in LocalToWorld localToWorld) =>
 				{
-					if (!Input.GetKey(gun.KeyCode)) 
+					if (!Input.GetKeyDown(gun.KeyCode)) 
 						return;
 					
 					Entity projectileEntity = commandBuffer.Instantiate(gun.ProjectileEntity);
