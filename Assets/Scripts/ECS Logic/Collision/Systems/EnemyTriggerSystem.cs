@@ -36,6 +36,7 @@ namespace DefaultNamespace
 					destroyCommandBuffer.DestroyEntity(entityInQueryIndex, enemyEntity);
 					Entity hitEntity = collisionBuffer[0].HitboxEntity;
 					
+					// TODO: change from hard coded value to some config cached and captured to job one
 					appendCommandBuffer.AppendToBuffer(entityInQueryIndex, hitEntity, 
 						new DamageToApplyBufferElement{Value = 50});
 				})
