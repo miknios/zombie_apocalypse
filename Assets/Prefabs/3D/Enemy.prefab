@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6478536213147159724, guid: ceb0d31f8bfed7c4ba650878cbae8688, type: 3}
+  - {fileID: 2100000, guid: 50c841b14f3e8bb479a313225723b05b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -136,6 +136,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 0.25
   collisionLayer: 0
+  effectType: 0
+  value: 0
+  isPenetrative: 0
 --- !u!114 &381514066058489416
 MonoBehaviour:
   m_ObjectHideFlags: 0

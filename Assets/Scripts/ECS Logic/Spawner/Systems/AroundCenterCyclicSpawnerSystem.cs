@@ -4,7 +4,10 @@ using ECS_Logic.Timers.Components;
 using ECS_Logic.Timers.Components.TimerTypes;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Rendering;
 using Unity.Transforms;
+using UnityEngine;
+using Random = Unity.Mathematics.Random;
 
 namespace ECS_Logic.Systems
 {
@@ -54,6 +57,11 @@ namespace ECS_Logic.Systems
 
 			Translation translation = new Translation {Value = newPosition};
 			commandBuffer.SetComponent(entityInQueryIndex, spawnedEntity, translation);
+
+			Color color = Color.HSVToRGB(randomGenerator.NextFloat(), 0.6f, 0.6f);
+			float4 colorValue = new float4(color.r, color.g, color.b, color.a);
+			MaterialColor materialColor = new MaterialColor{Value = colorValue};
+			commandBuffer.AddComponent(entityInQueryIndex, spawnedEntity, materialColor);
 		}
 
 		private static float3 GetRandomPosition(float randomAngle, ref AroundCenterCyclicSpawner spawner)
