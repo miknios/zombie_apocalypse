@@ -31,6 +31,7 @@ namespace DefaultNamespace
 		{
 			SignalBusInstaller.Install(Container);
 			Container.DeclareSignal<KilledEnemySignal>();
+			Container.DeclareSignal<AliveEnemiesSignal>();
 			Container.DeclareSignal<GameOverSignal>();
 			Container.DeclareSignal<SpellFiredSignal>();
 		}

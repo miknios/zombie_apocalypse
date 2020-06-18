@@ -1,23 +1,15 @@
 ﻿using Signals;
-using TMPro;
-using UnityEngine;
-using UnityEngine.Rendering;
+using UI;
 using Zenject;
 
-[RequireComponent(typeof(TMP_Text))]
-public class KilledEnemiesLabelController : MonoBehaviour
+public class KilledEnemiesLabelController : EnemyCountLabelBase
 {
 	[Inject] private SignalBus signalBus = null;
-	private TMP_Text text;
 	
-	private void Awake()
+	protected override void OnAwake()
 	{
 		signalBus.Subscribe<KilledEnemySignal>(s => UpdateLabel(s.EnemiesKilledCount));
-		text = GetComponent<TMP_Text>();
 	}
 
-	private void UpdateLabel(int killedEnemiesCount)
-	{
-		text.SetText($"Killed enemies: {killedEnemiesCount}");
-	}
+	protected override string GetTextForCount(int count) => $"Killed enemies: {count}";
 }

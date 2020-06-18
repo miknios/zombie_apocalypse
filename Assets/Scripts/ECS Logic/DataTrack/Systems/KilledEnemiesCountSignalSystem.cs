@@ -4,10 +4,9 @@ using ECS_Logic.DataTrack.Components;
 using Signals;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine.Rendering;
 using Zenject;
 
-namespace ECS_Logic.DataTrack
+namespace ECS_Logic.DataTrack.Systems
 {
 	[UpdateInGroup(typeof(LateSimulationSystemGroup))]
 	public class KilledEnemiesCountSignalSystem : SystemBase
