@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using DefaultNamespace.ECS_Logic.Common.Components;
+using ECS_Logic.Timers.Components;
 using ECS_Logic.Weapons.Components;
 using Unity.Entities;
 using UnityEngine;
@@ -10,6 +12,7 @@ namespace ECS_Logic.Common.Collision.Components
 		[SerializeField] private GameObject projectilePrefab = null;
 		[SerializeField] private KeyCode keyToTrigger = KeyCode.Mouse0;
 		[SerializeField] private float projectileSpeed = 40;
+		[SerializeField] private float cooldownTime = 0;
 
 		public void DeclareReferencedPrefabs(List<GameObject> referencedPrefabs)
 		{
@@ -23,6 +26,18 @@ namespace ECS_Logic.Common.Collision.Components
 				ProjectileEntity = conversionSystem.GetPrimaryEntity(projectilePrefab),
 				ProjectileSpeed = projectileSpeed
 			});
+
+			dstManager.AddComponentData(entity, new Timer
+			{
+				AutoRestart = false,
+				CurrentTime = cooldownTime,
+				InitialTime = cooldownTime,
+				Owner = entity
+			});
+			dstManager.AddComponent<Enabled>(entity);
+
+			if (cooldownTime == 0)
+				dstManager.AddComponent<Timeout>(entity);
 		}
 	}
 }

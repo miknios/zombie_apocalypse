@@ -47,6 +47,7 @@ MonoBehaviour:
     type: 3}
   keyToTrigger: 323
   projectileSpeed: 40
+  cooldownTime: 0.1
 --- !u!1 &2116212806
 GameObject:
   m_ObjectHideFlags: 0

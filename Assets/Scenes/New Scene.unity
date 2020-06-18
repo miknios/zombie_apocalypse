@@ -958,6 +958,7 @@ MonoBehaviour:
     type: 3}
   keyToTrigger: 49
   projectileSpeed: 15
+  cooldownTime: 0.4
 --- !u!1 &762789703
 GameObject:
   m_ObjectHideFlags: 0
@@ -1295,6 +1296,7 @@ MonoBehaviour:
     type: 3}
   keyToTrigger: 50
   projectileSpeed: 10
+  cooldownTime: 0.8
 --- !u!1 &994750921
 GameObject:
   m_ObjectHideFlags: 0
