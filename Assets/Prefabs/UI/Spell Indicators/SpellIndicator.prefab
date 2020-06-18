@@ -322,3 +322,4 @@ MonoBehaviour:
   spellType: 0
   timerTimeStep: 0.1
   cooldownLabel: {fileID: 5222715588470008072}
+  iconImage: {fileID: 5598633202377898231}

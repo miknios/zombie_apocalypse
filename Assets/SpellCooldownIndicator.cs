@@ -1,8 +1,9 @@
-﻿using System.Collections;
-using AuthoringComponents;
+﻿using AuthoringComponents;
+using DG.Tweening;
 using Signals;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 public class SpellCooldownIndicator : MonoBehaviour
@@ -10,12 +11,14 @@ public class SpellCooldownIndicator : MonoBehaviour
 	[SerializeField] private SpellType spellType = SpellType.FireStrike;
 	[SerializeField] private float timerTimeStep = 0.1f;
 	[SerializeField] private TMP_Text cooldownLabel = null;
+	[SerializeField] private Image iconImage = null;
 
-	private Coroutine currentCoroutine = null;
+	private RectTransform iconImageTransform;
 
 	[Inject]
 	public void ConstructWithInjection(SignalBus signalBus)
 	{
+		iconImageTransform = iconImage.transform as RectTransform;
 		ClearText();
 		signalBus.Subscribe<SpellFiredSignal>(ProcessSignal);
 	}
@@ -35,26 +38,28 @@ public class SpellCooldownIndicator : MonoBehaviour
 
 	private void AnimateCooldown(float cooldown)
 	{
-		if(currentCoroutine != null)
-			StopCoroutine(currentCoroutine);
-		
-		currentCoroutine = StartCoroutine(AnimateLabel(cooldown));
+		DOTween
+			.To(SetTextToCurrentTime, cooldown, 0, cooldown)
+			.OnComplete(IndicateSpellAvailable);
 	}
 
-	private IEnumerator AnimateLabel(float cooldown)
+	private void IndicateSpellAvailable()
 	{
-		for (float i = cooldown; i > 0; i -= timerTimeStep)
-		{
-			SetTextToCurrentTime(i);
-			yield return new WaitForSecondsRealtime(timerTimeStep);
-		}
-
 		ClearText();
-		currentCoroutine = null;
+
+		iconImageTransform.DOKill(true);
+		iconImageTransform
+			.DOScale(1.2f, 0.1f)
+			.SetLoops(2, LoopType.Yoyo);
+
+		iconImage.DOKill(true);
+		iconImage
+			.DOColor(Color.green, 0.3f)
+			.SetLoops(2, LoopType.Yoyo);
 	}
 
 	private void SetTextToCurrentTime(float i)
 	{
-		cooldownLabel.SetText($"{i.ToString("0.0")}s");
+		cooldownLabel.SetText($"{i:0.0}s");
 	}
 }
