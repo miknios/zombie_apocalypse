@@ -7,10 +7,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5568844143553739366, guid: 5928cf7c0ad5aed4394d7329eb17685a,
+        type: 3}
+      propertyPath: spellType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5598633202881910250, guid: 5928cf7c0ad5aed4394d7329eb17685a,
         type: 3}
       propertyPath: m_Name
-      value: Fire Strike Indicator
+      value: Fire Strike Indicator Variant
       objectReference: {fileID: 0}
     - target: {fileID: 5598633202881910251, guid: 5928cf7c0ad5aed4394d7329eb17685a,
         type: 3}

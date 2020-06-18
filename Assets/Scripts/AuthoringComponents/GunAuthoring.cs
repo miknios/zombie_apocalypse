@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AuthoringComponents;
 using DefaultNamespace.ECS_Logic.Common.Components;
 using ECS_Logic.Timers.Components;
 using ECS_Logic.Weapons.Components;
@@ -13,6 +14,8 @@ namespace ECS_Logic.Common.Collision.Components
 		[SerializeField] private KeyCode keyToTrigger = KeyCode.Mouse0;
 		[SerializeField] private float projectileSpeed = 40;
 		[SerializeField] private float cooldownTime = 0;
+		[SerializeField] private bool isSpell = false;
+		[SerializeField] private SpellType spellType = SpellType.FireStrike;
 
 		public void DeclareReferencedPrefabs(List<GameObject> referencedPrefabs)
 		{
@@ -38,6 +41,9 @@ namespace ECS_Logic.Common.Collision.Components
 
 			if (cooldownTime == 0)
 				dstManager.AddComponent<Timeout>(entity);
+
+			if (isSpell)
+				dstManager.AddComponentData(entity, new Spell {SpellType = spellType});
 		}
 	}
 }
