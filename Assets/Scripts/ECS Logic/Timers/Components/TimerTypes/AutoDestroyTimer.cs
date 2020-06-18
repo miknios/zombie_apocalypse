@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-namespace ECS_Logic.AutoDestruction.Components
+namespace ECS_Logic.Timers.Components.TimerTypes
 {
 	public struct AutoDestroyTimer : IComponentData { }
 }

@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-namespace DefaultNamespace.ECS_Logic.Timer.Components
+namespace ECS_Logic.Timers.Components
 {
 	public struct Timeout : IComponentData { }
 }

@@ -1,6 +1,6 @@
 ﻿using DefaultNamespace.ECS_Logic.Common.Components;
-using DefaultNamespace.ECS_Logic.Timer.Components;
 using ECS_Logic;
+using ECS_Logic.Timers.Components;
 using Unity.Entities;
 using Unity.Mathematics;
 

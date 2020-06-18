@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using DefaultNamespace;
 using DefaultNamespace.ECS_Logic.Common.Components;
-using DefaultNamespace.ECS_Logic.Timer.Components;
-using DefaultNamespace.ECS_Logic.Timer.Components.TimerTypes;
+using ECS_Logic.Timers.Components;
+using ECS_Logic.Timers.Components.TimerTypes;
 using Unity.Entities;
 using UnityEngine;
 using Zenject;

@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-namespace DefaultNamespace.ECS_Logic.Timer.Components.TimerTypes
+namespace ECS_Logic.Timers.Components.TimerTypes
 {
 	public struct AroundCenterCyclicSpawnerTimerComponent : IComponentData { }
 }

@@ -1,5 +1,5 @@
-﻿using DefaultNamespace.ECS_Logic.Timer.Components;
-using ECS_Logic.AutoDestruction.Components;
+﻿using ECS_Logic.Timers.Components;
+using ECS_Logic.Timers.Components.TimerTypes;
 using Unity.Entities;
 
 namespace ECS_Logic.AutoDestruction.Systems
