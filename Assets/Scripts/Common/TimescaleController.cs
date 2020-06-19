@@ -1,4 +1,5 @@
-﻿using Signals;
+﻿using System;
+using Signals;
 using UnityEngine;
 using Zenject;
 
@@ -14,5 +15,15 @@ public class TimescaleController : MonoBehaviour
 	private void SetTimescaleToZero()
 	{
 		Time.timeScale = 0;
+	}
+
+	private void OnDestroy()
+	{
+		RestoreInitialTimescale();
+	}
+
+	private void RestoreInitialTimescale()
+	{
+		Time.timeScale = 1;
 	}
 }

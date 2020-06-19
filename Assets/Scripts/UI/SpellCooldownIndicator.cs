@@ -46,20 +46,30 @@ public class SpellCooldownIndicator : MonoBehaviour
 	private void IndicateSpellAvailable()
 	{
 		ClearText();
+		KillTweens();
 
-		iconImageTransform.DOKill(true);
 		iconImageTransform
 			.DOScale(1.2f, 0.1f)
 			.SetLoops(2, LoopType.Yoyo);
 
-		iconImage.DOKill(true);
 		iconImage
 			.DOColor(Color.green, 0.3f)
 			.SetLoops(2, LoopType.Yoyo);
 	}
 
+	private void KillTweens()
+	{
+		iconImageTransform.DOKill(true);
+		iconImage.DOKill(true);
+	}
+
 	private void SetTextToCurrentTime(float i)
 	{
 		cooldownLabel.SetText($"{i:0.0}s");
+	}
+
+	private void OnDestroy()
+	{
+		KillTweens();
 	}
 }

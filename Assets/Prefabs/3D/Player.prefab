@@ -147,7 +147,7 @@ MonoBehaviour:
     type: 3}
   keyToTrigger: 323
   projectileSpeed: 40
-  cooldownTime: 0.1
+  cooldownTime: 0
   isSpell: 0
   spellType: 0
 --- !u!1 &2116212806
