@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 364177b17a3d43ee894a19bec826a103, type: 3}
+  m_Name: DifficultyConfigInstaller
+  m_EditorClassIdentifier: 
+  easyConfig: {fileID: 11400000, guid: 7a7972f6968c5b742982e3aa7405aa47, type: 2}
+  mediumConfig: {fileID: 11400000, guid: 036e0ff05dd2ef349ab2ade69338ae03, type: 2}
+  hardConfig: {fileID: 11400000, guid: fcaebc8ec8e9a7b41bbcbaf3772bf0ab, type: 2}
