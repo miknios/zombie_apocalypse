@@ -31,7 +31,7 @@ namespace ECS_Logic.EffectTriggers.Systems
 				{
 					if (collisionBuffer.Length == 0)
 						return;
-					
+
 					commandBuffer.DestroyEntity(entityInQueryIndex, entity);
 
 					var effectApplyData = new EffectTriggerApplyData
@@ -39,11 +39,9 @@ namespace ECS_Logic.EffectTriggers.Systems
 						Value = effectTrigger.Value,
 						Target = collisionBuffer[0].HitboxEntity
 					};
-					var effectApplyDataEntity = commandBuffer.CreateEntity(entityInQueryIndex);
-					
-					commandBuffer.AddComponent(entityInQueryIndex, effectApplyDataEntity, effectApplyData);
-					commandBuffer.AddSharedComponent(entityInQueryIndex, effectApplyDataEntity,
-						new EffectTriggerApplyEffectType {EffectType = effectTrigger.EffectType});
+
+					CreateNewEffectApplyDataEntity(ref commandBuffer, effectTrigger, entityInQueryIndex,
+						effectApplyData);
 				})
 				.ScheduleParallel();
 
@@ -62,33 +60,56 @@ namespace ECS_Logic.EffectTriggers.Systems
 
 					for (int i = 0; i < collisionBuffer.Length; i++)
 					{
-						var collisionEntity = collisionBuffer[i].HitboxEntity;
-						bool alreadyCollided = false;
-						for (int j = 0; j < alreadyCollidedBuffer.Length; j++)
-						{
-							var alreadyCollidedEntity = alreadyCollidedBuffer[j].HitboxEntity;
-							if (collisionEntity == alreadyCollidedEntity)
-								alreadyCollided = true;
-						}
-
-						if (alreadyCollided)
-							continue;
-
-						var effectApplyData = new EffectTriggerApplyData
-						{
-							Value = effectTrigger.Value,
-							Target = collisionEntity
-						};
-						var effectApplyDataEntity = commandBuffer.CreateEntity(entityInQueryIndex);
-						commandBuffer.AddComponent(entityInQueryIndex, effectApplyDataEntity, effectApplyData);
-						commandBuffer.AddSharedComponent(entityInQueryIndex, effectApplyDataEntity,
-							new EffectTriggerApplyEffectType {EffectType = effectTrigger.EffectType});
-						alreadyCollidedBuffer.Add(collisionEntity);
+						ProcessCollision(collisionBuffer[i], ref alreadyCollidedBuffer, ref commandBuffer,
+							effectTrigger, entityInQueryIndex);
 					}
 				})
 				.ScheduleParallel();
 
 			commandBufferSystem.AddJobHandleForProducer(Dependency);
+		}
+
+		private static void ProcessCollision(TriggerCollisionBufferElement triggerCollisionBufferElement,
+			ref DynamicBuffer<AlreadyCollidedBufferElement> alreadyCollidedBuffer,
+			ref EntityCommandBuffer.Concurrent commandBuffer,
+			EffectTrigger effectTrigger, int entityInQueryIndex)
+		{
+			var collisionEntity = triggerCollisionBufferElement.HitboxEntity;
+			if (HasAlreadyCollided(ref alreadyCollidedBuffer, collisionEntity))
+				return;
+
+			var effectApplyData = new EffectTriggerApplyData
+			{
+				Value = effectTrigger.Value,
+				Target = collisionEntity
+			};
+
+			CreateNewEffectApplyDataEntity(ref commandBuffer, effectTrigger, entityInQueryIndex, effectApplyData);
+			alreadyCollidedBuffer.Add(collisionEntity);
+		}
+
+		private static bool HasAlreadyCollided(
+			ref DynamicBuffer<AlreadyCollidedBufferElement> alreadyCollidedBuffer, Entity collisionEntity)
+		{
+			bool alreadyCollided = false;
+			for (int j = 0; j < alreadyCollidedBuffer.Length; j++)
+			{
+				var alreadyCollidedEntity = alreadyCollidedBuffer[j].HitboxEntity;
+				if (collisionEntity == alreadyCollidedEntity)
+					alreadyCollided = true;
+			}
+
+			return alreadyCollided;
+		}
+
+		private static void CreateNewEffectApplyDataEntity(ref EntityCommandBuffer.Concurrent commandBuffer,
+			EffectTrigger effectTrigger,
+			int entityInQueryIndex, EffectTriggerApplyData effectApplyData)
+		{
+			var effectApplyDataEntity = commandBuffer.CreateEntity(entityInQueryIndex);
+			commandBuffer.AddComponent(entityInQueryIndex, effectApplyDataEntity, effectApplyData);
+			commandBuffer.AddSharedComponent(entityInQueryIndex, effectApplyDataEntity,
+				new EffectTriggerApplyEffectType {EffectType = effectTrigger.EffectType});
 		}
 	}
 }

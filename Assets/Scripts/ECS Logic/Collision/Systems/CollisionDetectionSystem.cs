@@ -63,7 +63,7 @@ namespace ECS_Logic.Collision.Systems
 
 			// Combining job dependencies for next job, because it needs both collections filled before starting.
 			var combinedJobHandles = JobHandle.CombineDependencies(hitboxHashMapJobHandle, triggerArrayJobHandle);
-			
+
 			// Iterating through all triggers checking intersections foreach hitbox inside cell it's in.
 			// Adding hitbox entity reference to trigger collision buffer if intersected.
 			var collisionDetectionJobHandle = Entities
@@ -71,20 +71,8 @@ namespace ECS_Logic.Collision.Systems
 					in TriggerArea triggerArea, in LocalToWorld localToWorld) =>
 				{
 					var triggerCellHash = triggerCellHashArray[entityInQueryIndex];
-					var hitboxDataForCell = hitboxDataForCellHash.GetValuesForKey(triggerCellHash);
-					while (hitboxDataForCell.MoveNext())
-					{
-						var hitboxData = hitboxDataForCell.Current;
-
-						if (triggerArea.CollisionLayer != hitboxData.CollisionLayer)
-							continue;
-
-						if (!CirclesAreIntersecting(localToWorld.Position, triggerArea.Radius,
-							hitboxData.Position, hitboxData.Radius))
-							continue;
-
-						collisionBuffer.Add(new TriggerCollisionBufferElement {HitboxEntity = hitboxData.Entity});
-					}
+					CheckIntersectionsWithHitboxesInCell(ref hitboxDataForCellHash, ref collisionBuffer,
+						triggerCellHash, triggerArea, localToWorld);
 				})
 				.WithReadOnly(triggerCellHashArray)
 				.WithReadOnly(hitboxDataForCellHash)
@@ -95,9 +83,38 @@ namespace ECS_Logic.Collision.Systems
 			var disposeJobHandle = triggerCellHashArray.Dispose(Dependency);
 			disposeJobHandle =
 				JobHandle.CombineDependencies(disposeJobHandle, hitboxDataForCellHash.Dispose(Dependency));
-			
+
 			// Returning combined job handle dependency to system.
 			Dependency = disposeJobHandle;
+		}
+
+		private static void CheckIntersectionsWithHitboxesInCell(
+			ref NativeMultiHashMap<uint, HitboxCollisionDetectionData> hitboxDataForCellHash,
+			ref DynamicBuffer<TriggerCollisionBufferElement> collisionBuffer, uint triggerCellHash,
+			TriggerArea triggerArea, LocalToWorld localToWorld)
+		{
+			var hitboxDataForCell = hitboxDataForCellHash.GetValuesForKey(triggerCellHash);
+			while (hitboxDataForCell.MoveNext())
+			{
+				ProcessHitboxDataAndAddIntersectionsToBuffer(ref collisionBuffer, ref hitboxDataForCell, triggerArea,
+					localToWorld);
+			}
+		}
+
+		private static void ProcessHitboxDataAndAddIntersectionsToBuffer(
+			ref DynamicBuffer<TriggerCollisionBufferElement> collisionBuffer,
+			ref NativeMultiHashMap<uint, HitboxCollisionDetectionData>.Enumerator hitboxDataForCell,
+			TriggerArea triggerArea, LocalToWorld localToWorld)
+		{
+			var hitboxData = hitboxDataForCell.Current;
+			if (triggerArea.CollisionLayer != hitboxData.CollisionLayer)
+				return;
+
+			if (!CirclesAreIntersecting(localToWorld.Position, triggerArea.Radius,
+				hitboxData.Position, hitboxData.Radius))
+				return;
+
+			collisionBuffer.Add(new TriggerCollisionBufferElement {HitboxEntity = hitboxData.Entity});
 		}
 
 		// Generates cell hash for entity's position. It's offsetted by half cell, because in our case it's more optimal for cell to be in the center where the player is.
@@ -106,7 +123,7 @@ namespace ECS_Logic.Collision.Systems
 			float2 cellCoordinates = math.floor((position.xy - new float2(CELL_SIZE) / 2) / CELL_SIZE);
 			return math.hash(cellCoordinates);
 		}
-		
+
 		private static bool CirclesAreIntersecting(float3 center1, float radius1, float3 center2, float radius2)
 		{
 			float dx = center1.x - center2.x;

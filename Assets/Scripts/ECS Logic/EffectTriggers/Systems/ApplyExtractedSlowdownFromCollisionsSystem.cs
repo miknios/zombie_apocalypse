@@ -19,7 +19,7 @@ namespace ECS_Logic.EffectTriggers.Systems
 		protected override void OnCreate()
 		{
 			var world = World.DefaultGameObjectInjectionWorld;
-			
+
 			commandBufferSystem = world.GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
 			entityManager = world.EntityManager;
 		}
@@ -28,46 +28,67 @@ namespace ECS_Logic.EffectTriggers.Systems
 		{
 			var commandBuffer = commandBufferSystem.CreateCommandBuffer();
 
-			// Iterate through slowdown trigger apply data. Add slowdown with timer to target or refresh timer. If there is slowdown already applied on target entity and its source is different -> override it.
+			// Iterate through slowdown trigger apply data.
+			// Add slowdown with timer to target or refresh timer.
+			// If there is velocity multiplier already applied on target entity and its source is not slowdown -> override it.
 			Entities
 				.WithoutBurst()
 				.WithSharedComponentFilter(new EffectTriggerApplyEffectType {EffectType = EffectType.Slowdown})
 				.ForEach((Entity entity, in EffectTriggerApplyData effectTriggerApplyData) =>
 				{
 					commandBuffer.DestroyEntity(entity);
-					
+
 					Entity targetEntity = effectTriggerApplyData.Target;
 					if (!entityManager.Exists(targetEntity))
 					{
 						commandBuffer.DestroyEntity(entity);
 						return;
 					}
-					
+
 					float slowdownValue = effectTriggerApplyData.Value;
 					if (HasComponent<VelocityMultiplier>(targetEntity))
 					{
-						var slowedBy = GetComponent<VelocityMultiplier>(targetEntity).Source;
-						if (HasComponent<SlowdownDurationTimer>(slowedBy))
+						var currentSlowdownSource = GetComponent<VelocityMultiplier>(targetEntity).Source;
+						if (HasComponent<SlowdownDurationTimer>(currentSlowdownSource))
 						{
-							var refreshedTimer = GetComponent<Timer>(slowedBy);
-							refreshedTimer.CurrentTime = refreshedTimer.InitialTime;
-							commandBuffer.SetComponent(slowedBy, refreshedTimer);
+							RefreshTimer(ref commandBuffer, currentSlowdownSource);
 							return;
 						}
 
-						commandBuffer.DestroyEntity(slowedBy);
-
-						entityManager.SetComponentData(targetEntity,
-							CreateTimerAndGetVelocityMultiplier(ref commandBuffer, targetEntity, slowdownValue));
+						UpdateSlowdownAndChangeSourceToNewTimer(ref commandBuffer, currentSlowdownSource,
+							targetEntity, slowdownValue);
 						return;
 					}
 
-					commandBuffer.AddComponent(targetEntity,
-						CreateTimerAndGetVelocityMultiplier(ref commandBuffer, targetEntity, slowdownValue));
+					AddSlowdownWithTimer(ref commandBuffer, targetEntity, slowdownValue);
 				})
 				.Run();
 
 			commandBufferSystem.AddJobHandleForProducer(Dependency);
+		}
+
+		private void RefreshTimer(ref EntityCommandBuffer commandBuffer, Entity currentSlowdownSource)
+		{
+			var refreshedTimer = GetComponent<Timer>(currentSlowdownSource);
+			refreshedTimer.CurrentTime = refreshedTimer.InitialTime;
+			commandBuffer.SetComponent(currentSlowdownSource, refreshedTimer);
+		}
+
+		private void UpdateSlowdownAndChangeSourceToNewTimer(ref EntityCommandBuffer commandBuffer,
+			Entity currentSlowdownSource, Entity targetEntity, float slowdownValue)
+		{
+			commandBuffer.DestroyEntity(currentSlowdownSource);
+			var velocityMultiplier =
+				CreateTimerAndGetVelocityMultiplier(ref commandBuffer, targetEntity, slowdownValue);
+			entityManager.SetComponentData(targetEntity, velocityMultiplier);
+		}
+
+		private static void AddSlowdownWithTimer(ref EntityCommandBuffer commandBuffer, Entity targetEntity,
+			float slowdownValue)
+		{
+			var velocityMultiplier =
+				CreateTimerAndGetVelocityMultiplier(ref commandBuffer, targetEntity, slowdownValue);
+			commandBuffer.AddComponent(targetEntity, velocityMultiplier);
 		}
 
 		private static VelocityMultiplier CreateTimerAndGetVelocityMultiplier(
