@@ -137,7 +137,7 @@ MonoBehaviour:
   radius: 0.25
   collisionLayer: 0
   effectType: 0
-  value: 0
+  value: 50
   isPenetrative: 0
 --- !u!114 &381514066058489416
 MonoBehaviour:
