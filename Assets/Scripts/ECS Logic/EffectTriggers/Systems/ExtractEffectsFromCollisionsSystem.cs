@@ -22,6 +22,7 @@ namespace ECS_Logic
 			Entities
 				.WithNone<Penetratrive>()
 				.WithChangeFilter<TriggerCollisionBufferElement>()
+				.WithoutBurst()
 				.ForEach((int entityInQueryIndex, Entity entity, in EffectTrigger effectTrigger,
 					in DynamicBuffer<TriggerCollisionBufferElement> collisionBuffer) =>
 				{
@@ -44,6 +45,7 @@ namespace ECS_Logic
 			Entities
 				.WithAll<Penetratrive>()
 				.WithChangeFilter<TriggerCollisionBufferElement>()
+				.WithoutBurst()
 				.ForEach((int entityInQueryIndex, Entity entity,
 					ref DynamicBuffer<AlreadyCollidedBufferElement> alreadyCollidedBuffer,
 					in DynamicBuffer<TriggerCollisionBufferElement> collisionBuffer, in EffectTrigger effectTrigger) =>
