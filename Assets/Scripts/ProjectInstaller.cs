@@ -9,7 +9,7 @@ namespace DefaultNamespace
 		{
 			BindSignals();
 			
-			Container.Bind<IInitializable>().To<WorldInitialization>().AsSingle();
+			Container.Bind<IInitializable>().To<GameplayWorldInitialization>().AsSingle();
 		}
 
 		private void BindSignals()

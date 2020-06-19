@@ -3,7 +3,7 @@ using Zenject;
 
 namespace DefaultNamespace
 {
-	public class WorldInitialization : IInitializable
+	public class GameplayWorldInitialization : IInitializable
 	{
 		[Inject] private DiContainer diContainer = null;
 		

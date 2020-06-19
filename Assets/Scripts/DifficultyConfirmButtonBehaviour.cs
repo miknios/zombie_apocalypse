@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace DefaultNamespace
 {
@@ -11,7 +10,8 @@ namespace DefaultNamespace
 		{
 			PlayerPrefs.SetInt(PlayerPrefsKey.DIFFICULTY_SETTING, (int)difficultySetting);
 			PlayerPrefs.Save();
-			SceneManager.LoadScene(SceneNameUtils.SceneNameForEnum(SceneNameUtils.Scene.Gameplay));
+			
+			SceneLoadUtils.LoadGameplayScene();
 		}
 	}
 }
