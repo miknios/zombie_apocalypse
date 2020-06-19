@@ -11,7 +11,7 @@ namespace DefaultNamespace
 		{
 			PlayerPrefs.SetInt(PlayerPrefsKey.DIFFICULTY_SETTING, (int)difficultySetting);
 			PlayerPrefs.Save();
-			SceneManager.LoadScene(SceneName.GAMEPLAY_SCENE);
+			SceneManager.LoadScene(SceneNameUtils.SceneNameForEnum(SceneNameUtils.Scene.Gameplay));
 		}
 	}
 }
