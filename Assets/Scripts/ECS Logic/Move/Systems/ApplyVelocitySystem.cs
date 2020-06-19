@@ -1,4 +1,4 @@
-﻿using Configuration;
+﻿using ECS_Configuration;
 using ECS_Logic.Move.Components;
 using Unity.Burst;
 using Unity.Collections;
@@ -10,6 +10,7 @@ namespace ECS_Logic.Move.Systems
 	[UpdateInGroup(typeof(ApplySelfContainedDataSystemGroup))]
 	public class ApplyVelocitySystem : SystemBase
 	{
+		// Job for chunk is more optimal because we can skip checking for velocity multiplier for each entity and instead check it once for chunk.
 		[BurstCompile]
 		struct ApplyVelocityJob : IJobChunk
 		{

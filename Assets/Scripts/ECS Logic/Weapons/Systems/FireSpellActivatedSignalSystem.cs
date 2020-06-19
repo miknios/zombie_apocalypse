@@ -6,8 +6,9 @@ using Zenject;
 
 namespace ECS_Logic.Weapons.Systems
 {
+	// Fires spell activated signal for spells used in this frame.
 	[UpdateInGroup(typeof(PresentationSystemGroup))]
-	public class FireSpellFiredSignalSystem : SystemBase
+	public class FireSpellActivatedSignalSystem : SystemBase
 	{
 		[Inject] private SignalBus signalBus = null;
 
@@ -21,7 +22,7 @@ namespace ECS_Logic.Weapons.Systems
 					if (timer.CurrentTime != timer.InitialTime)
 						return;
 
-					signalBus.Fire(new SpellFiredSignal
+					signalBus.Fire(new SpellActivatedSignal
 					{
 						SpellType = spell.SpellType,
 						Cooldown = timer.CurrentTime

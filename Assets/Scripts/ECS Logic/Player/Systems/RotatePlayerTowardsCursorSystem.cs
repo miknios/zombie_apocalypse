@@ -1,4 +1,4 @@
-﻿using Configuration;
+﻿using ECS_Configuration;
 using ECS_Logic.Components;
 using ECS_Logic.TagComponents;
 using Unity.Entities;
@@ -15,8 +15,6 @@ namespace ECS_Logic.Player.Systems
 
 		protected override void OnCreate()
 		{
-			base.OnCreate();
-
 			playerQuery = GetEntityQuery(typeof(PlayerTag), typeof(Rotation));
 			commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
 		}
@@ -49,6 +47,7 @@ namespace ECS_Logic.Player.Systems
 			{
 				Value = quaternion.LookRotation(playerForward, new float3(0, 1, 0))
 			};
+
 			return rotation;
 		}
 	}

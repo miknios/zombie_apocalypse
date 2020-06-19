@@ -1,9 +1,9 @@
 ﻿using Unity.Entities;
 using Zenject;
 
-namespace Configuration
+namespace ECS_Configuration
 {
-	public class GameplayWorldInitialization : IInitializable
+	public class WorldInjector : IInitializable
 	{
 		[Inject] private DiContainer diContainer = null;
 

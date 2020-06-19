@@ -4,8 +4,9 @@ using ECS_Logic.Timers.Components.TimerTypes;
 using Unity.Entities;
 using UnityEngine;
 
-namespace AuthoringComponents
+namespace EntityAuthoringComponents
 {
+	[AddComponentMenu("AuthoringComponents/AutoDestroy")]
 	public class AutoDestroyAuthoring : MonoBehaviour, IConvertGameObjectToEntity
 	{
 		[SerializeField] private float destroyAfterSeconds = 0.625f;

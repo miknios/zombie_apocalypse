@@ -2,7 +2,7 @@
 
 namespace Signals
 {
-	public struct SpellFiredSignal
+	public struct SpellActivatedSignal
 	{
 		public SpellType SpellType;
 		public float Cooldown;

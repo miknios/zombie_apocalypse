@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-namespace Configuration
+namespace ECS_Configuration
 {
 	[UnityEngine.ExecuteAlways]
 	[UpdateInGroup(typeof(InitializationSystemGroup), OrderLast = true)]

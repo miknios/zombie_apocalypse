@@ -32,6 +32,7 @@ namespace ECS_Logic.DataTrack.Systems
 			var array = sumArray;
 			array[0] = 0;
 
+			// Summing enemies killed in last frame.
 			var jobHandle = Entities
 				.WithAll<EnemyTag, HealthDepleted>()
 				.ForEach((Entity entity) => { array[0]++; })
@@ -39,6 +40,8 @@ namespace ECS_Logic.DataTrack.Systems
 
 			var currentKilledEnemiesEntity = killedEnemiesCountQuery.GetSingletonEntity();
 			var commandBuffer = commandBufferSystem.CreateCommandBuffer();
+			
+			// Update KilledEnemiesCount.
 			var finalJobHandle = Job
 				.WithCode(() =>
 				{
@@ -49,11 +52,13 @@ namespace ECS_Logic.DataTrack.Systems
 						Value = newCurrentKilledEnemiesCount
 					});
 				})
+				.WithReadOnly(array)
 				.Schedule(jobHandle);
 
 			Dependency = finalJobHandle;
 			commandBufferSystem.AddJobHandleForProducer(Dependency);
 
+			// If KilledEnemiesCount has changed -> fire event.
 			Entities
 				.WithoutBurst()
 				.WithChangeFilter<KilledEnemiesCount>()

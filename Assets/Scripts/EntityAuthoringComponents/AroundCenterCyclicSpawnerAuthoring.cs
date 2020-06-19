@@ -9,10 +9,10 @@ using UnityEngine;
 using Zenject;
 using Random = System.Random;
 
-namespace AuthoringComponents
+namespace EntityAuthoringComponents
 {
 	[RequiresEntityConversion]
-	[AddComponentMenu("AuthoringComponents/AroundCenterCyclicSpawnser")]
+	[AddComponentMenu("AuthoringComponents/AroundCenterCyclicSpawner")]
 	public class AroundCenterCyclicSpawnerAuthoring : MonoBehaviour, IConvertGameObjectToEntity,
 		IDeclareReferencedPrefabs
 	{

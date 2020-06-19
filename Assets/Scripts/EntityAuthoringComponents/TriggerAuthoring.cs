@@ -4,8 +4,9 @@ using ECS_Logic.EffectTriggers.Components;
 using Unity.Entities;
 using UnityEngine;
 
-namespace AuthoringComponents
+namespace EntityAuthoringComponents
 {
+	[AddComponentMenu("AuthoringComponents/Trigger")]
 	public class TriggerAuthoring : MonoBehaviour, IConvertGameObjectToEntity
 	{
 		[SerializeField] private float radius = 0.5f;

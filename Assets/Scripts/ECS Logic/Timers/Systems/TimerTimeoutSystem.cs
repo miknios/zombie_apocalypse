@@ -1,4 +1,4 @@
-﻿using Configuration;
+﻿using ECS_Configuration;
 using ECS_Logic.Timers.Components;
 using Unity.Entities;
 

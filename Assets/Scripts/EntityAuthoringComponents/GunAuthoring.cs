@@ -6,8 +6,9 @@ using ECS_Logic.Weapons.Components;
 using Unity.Entities;
 using UnityEngine;
 
-namespace AuthoringComponents
+namespace EntityAuthoringComponents
 {
+	[AddComponentMenu("AuthoringComponents/Gun")]
 	public class GunAuthoring : MonoBehaviour, IConvertGameObjectToEntity, IDeclareReferencedPrefabs
 	{
 		[SerializeField] private GameObject projectilePrefab = null;

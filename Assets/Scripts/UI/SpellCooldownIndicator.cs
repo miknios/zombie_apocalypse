@@ -21,7 +21,7 @@ namespace UI
 		{
 			iconImageTransform = iconImage.transform as RectTransform;
 			ClearText();
-			signalBus.Subscribe<SpellFiredSignal>(ProcessSignal);
+			signalBus.Subscribe<SpellActivatedSignal>(ProcessSignal);
 		}
 
 		private void ClearText()
@@ -29,12 +29,12 @@ namespace UI
 			cooldownLabel.SetText("");
 		}
 
-		private void ProcessSignal(SpellFiredSignal spellFiredSignal)
+		private void ProcessSignal(SpellActivatedSignal spellActivatedSignal)
 		{
-			if (spellFiredSignal.SpellType != spellType)
+			if (spellActivatedSignal.SpellType != spellType)
 				return;
 
-			AnimateCooldown(spellFiredSignal.Cooldown);
+			AnimateCooldown(spellActivatedSignal.Cooldown);
 		}
 
 		private void AnimateCooldown(float cooldown)

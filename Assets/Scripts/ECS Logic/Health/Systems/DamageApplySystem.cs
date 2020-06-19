@@ -1,4 +1,4 @@
-﻿using Configuration;
+﻿using ECS_Configuration;
 using ECS_Logic.Health.Components;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -20,7 +20,9 @@ namespace ECS_Logic.Health.Systems
 		{
 			var commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
 
+			// Foreach entity with damage to apply -> sum damage, clear buffer and apply.
 			Entities
+				.WithChangeFilter<DamageToApplyBufferElement>()
 				.ForEach((Entity entity, int entityInQueryIndex,
 					ref HealthPoints healthPoints, ref DynamicBuffer<DamageToApplyBufferElement> damageBuffer) =>
 				{

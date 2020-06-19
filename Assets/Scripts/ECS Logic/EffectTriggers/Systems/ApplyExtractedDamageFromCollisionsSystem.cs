@@ -1,4 +1,4 @@
-﻿using Configuration;
+﻿using ECS_Configuration;
 using ECS_Logic.EffectTriggers.Components;
 using ECS_Logic.Health.Components;
 using ECS_Logic.Health.Systems;
@@ -15,9 +15,10 @@ namespace ECS_Logic.EffectTriggers.Systems
 
 		protected override void OnCreate()
 		{
-			commandBufferSystem = World.DefaultGameObjectInjectionWorld
-				.GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
-			entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+			var world = World.DefaultGameObjectInjectionWorld;
+			
+			commandBufferSystem = world.GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
+			entityManager = world.EntityManager;
 		}
 
 		protected override void OnUpdate()

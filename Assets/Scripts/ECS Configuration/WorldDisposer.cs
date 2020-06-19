@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
 using Zenject;
 
-namespace Configuration
+namespace ECS_Configuration
 {
 	public class WorldDisposer : IInitializable
 	{

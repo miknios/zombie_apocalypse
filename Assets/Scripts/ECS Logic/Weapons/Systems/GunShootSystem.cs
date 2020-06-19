@@ -1,4 +1,4 @@
-﻿using Configuration;
+﻿using ECS_Configuration;
 using ECS_Logic.Move.Components;
 using ECS_Logic.Timers.Components;
 using ECS_Logic.Weapons.Components;
@@ -30,21 +30,30 @@ namespace ECS_Logic.Weapons.Systems
 					if (!UnityEngine.Input.GetKeyDown(gun.KeyCode))
 						return;
 
-					Entity projectileEntity = commandBuffer.Instantiate(gun.ProjectileEntity);
-					commandBuffer.SetComponent(projectileEntity, new Translation {Value = localToWorld.Position});
-
-					float3 velocity = localToWorld.Forward * gun.ProjectileSpeed;
-					commandBuffer.AddComponent(projectileEntity, new CurrentVelocity {Value = velocity});
-
-					if (timer.InitialTime == 0)
-						return;
-
-					timer.CurrentTime = timer.InitialTime;
-					commandBuffer.RemoveComponent<Timeout>(entity);
+					SpawnProjectile(ref commandBuffer, gun, localToWorld);
+					UpdateGunCooldown(ref commandBuffer, ref timer, entity);
 				})
 				.Run();
 
 			commandBufferSystem.AddJobHandleForProducer(Dependency);
+		}
+
+		private static void SpawnProjectile(ref EntityCommandBuffer commandBuffer, Gun gun, LocalToWorld localToWorld)
+		{
+			Entity projectileEntity = commandBuffer.Instantiate(gun.ProjectileEntity);
+			commandBuffer.SetComponent(projectileEntity, new Translation {Value = localToWorld.Position});
+
+			float3 velocity = localToWorld.Forward * gun.ProjectileSpeed;
+			commandBuffer.AddComponent(projectileEntity, new CurrentVelocity {Value = velocity});
+		}
+
+		private static void UpdateGunCooldown(ref EntityCommandBuffer commandBuffer, ref Timer timer, Entity entity)
+		{
+			if (timer.InitialTime == 0)
+				return;
+
+			timer.CurrentTime = timer.InitialTime;
+			commandBuffer.RemoveComponent<Timeout>(entity);
 		}
 	}
 }

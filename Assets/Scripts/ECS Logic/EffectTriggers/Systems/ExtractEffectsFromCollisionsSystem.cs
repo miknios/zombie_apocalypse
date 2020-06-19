@@ -1,4 +1,4 @@
-﻿using Configuration;
+﻿using ECS_Configuration;
 using ECS_Logic.Collision.Components;
 using ECS_Logic.EffectTriggers.Components;
 using Unity.Entities;
@@ -20,6 +20,8 @@ namespace ECS_Logic.EffectTriggers.Systems
 		{
 			var commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
 
+			// Iterate through all non-penetrative triggers.
+			// Destroy trigger with collisions and create entity with extracted effect value for later apply.
 			Entities
 				.WithNone<Penetratrive>()
 				.WithChangeFilter<TriggerCollisionBufferElement>()
@@ -29,6 +31,8 @@ namespace ECS_Logic.EffectTriggers.Systems
 				{
 					if (collisionBuffer.Length == 0)
 						return;
+					
+					commandBuffer.DestroyEntity(entityInQueryIndex, entity);
 
 					var effectApplyData = new EffectTriggerApplyData
 					{
@@ -36,13 +40,15 @@ namespace ECS_Logic.EffectTriggers.Systems
 						Target = collisionBuffer[0].HitboxEntity
 					};
 					var effectApplyDataEntity = commandBuffer.CreateEntity(entityInQueryIndex);
+					
 					commandBuffer.AddComponent(entityInQueryIndex, effectApplyDataEntity, effectApplyData);
 					commandBuffer.AddSharedComponent(entityInQueryIndex, effectApplyDataEntity,
 						new EffectTriggerApplyEffectType {EffectType = effectTrigger.EffectType});
-					commandBuffer.DestroyEntity(entityInQueryIndex, entity);
 				})
 				.ScheduleParallel();
 
+			// Iterate through all penetrative triggers.
+			// Create entities with extracted effect values for later apply and add hitbox entity reference to trigger already collided buffer.
 			Entities
 				.WithAll<Penetratrive>()
 				.WithChangeFilter<TriggerCollisionBufferElement>()

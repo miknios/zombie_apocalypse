@@ -5,8 +5,9 @@ using Unity.Entities;
 using UnityEngine;
 using Zenject;
 
-namespace AuthoringComponents
+namespace EntityAuthoringComponents
 {
+	[AddComponentMenu("AuthoringComponents/Player")]
 	public class PlayerAuthoring : MonoBehaviour, IConvertGameObjectToEntity
 	{
 		[Inject] private PlayerConfig playerConfig = null;

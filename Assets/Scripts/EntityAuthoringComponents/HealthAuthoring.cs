@@ -2,8 +2,9 @@
 using Unity.Entities;
 using UnityEngine;
 
-namespace AuthoringComponents
+namespace EntityAuthoringComponents
 {
+	[AddComponentMenu("AuthoringComponents/Health")]
 	public class HealthAuthoring : MonoBehaviour, IConvertGameObjectToEntity
 	{
 		[SerializeField] private int healthPoints = 100;

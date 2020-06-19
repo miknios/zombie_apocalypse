@@ -1,4 +1,4 @@
-﻿using Configuration;
+﻿using ECS_Configuration;
 using ECS_Logic.Move.Components;
 using ECS_Logic.TagComponents;
 using Unity.Entities;
@@ -25,6 +25,7 @@ namespace ECS_Logic.Move.Systems
 			Entity playerEntity = playerEntityQuery.GetSingletonEntity();
 			var commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
 
+			// Add CurrentVelocity component to entities with MoveTowardsPlayer component.
 			Entities
 				.WithAll<MoveTowardsPlayer>()
 				.WithNone<CurrentVelocity>()
@@ -36,6 +37,7 @@ namespace ECS_Logic.Move.Systems
 
 			commandBufferSystem.AddJobHandleForProducer(Dependency);
 
+			// Adjust velocity to follow player.
 			Entities
 				.WithAll<MoveTowardsPlayer>()
 				.ForEach((ref CurrentVelocity currentVelocity, in BaseSpeed baseSpeedComponent,

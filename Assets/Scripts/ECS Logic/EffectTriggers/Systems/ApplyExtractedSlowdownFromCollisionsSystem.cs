@@ -1,4 +1,4 @@
-﻿using Configuration;
+﻿using ECS_Configuration;
 using ECS_Logic.Common.Components;
 using ECS_Logic.EffectTriggers.Components;
 using ECS_Logic.Health.Systems;
@@ -18,30 +18,32 @@ namespace ECS_Logic.EffectTriggers.Systems
 
 		protected override void OnCreate()
 		{
-			commandBufferSystem = World.DefaultGameObjectInjectionWorld
-				.GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
-			entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+			var world = World.DefaultGameObjectInjectionWorld;
+			
+			commandBufferSystem = world.GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
+			entityManager = world.EntityManager;
 		}
 
 		protected override void OnUpdate()
 		{
 			var commandBuffer = commandBufferSystem.CreateCommandBuffer();
 
+			// Iterate through slowdown trigger apply data. Add slowdown with timer to target or refresh timer. If there is slowdown already applied on target entity and its source is different -> override it.
 			Entities
 				.WithoutBurst()
 				.WithSharedComponentFilter(new EffectTriggerApplyEffectType {EffectType = EffectType.Slowdown})
 				.ForEach((Entity entity, in EffectTriggerApplyData effectTriggerApplyData) =>
 				{
 					commandBuffer.DestroyEntity(entity);
+					
 					Entity targetEntity = effectTriggerApplyData.Target;
-					float value = effectTriggerApplyData.Value;
 					if (!entityManager.Exists(targetEntity))
 					{
 						commandBuffer.DestroyEntity(entity);
 						return;
 					}
-
-
+					
+					float slowdownValue = effectTriggerApplyData.Value;
 					if (HasComponent<VelocityMultiplier>(targetEntity))
 					{
 						var slowedBy = GetComponent<VelocityMultiplier>(targetEntity).Source;
@@ -56,12 +58,12 @@ namespace ECS_Logic.EffectTriggers.Systems
 						commandBuffer.DestroyEntity(slowedBy);
 
 						entityManager.SetComponentData(targetEntity,
-							CreateTimerAndGetVelocityMultiplier(ref commandBuffer, targetEntity, value));
+							CreateTimerAndGetVelocityMultiplier(ref commandBuffer, targetEntity, slowdownValue));
 						return;
 					}
 
 					commandBuffer.AddComponent(targetEntity,
-						CreateTimerAndGetVelocityMultiplier(ref commandBuffer, targetEntity, value));
+						CreateTimerAndGetVelocityMultiplier(ref commandBuffer, targetEntity, slowdownValue));
 				})
 				.Run();
 

@@ -3,6 +3,7 @@ using Unity.Entities;
 
 namespace ECS_Logic.Timers.Systems
 {
+	// Restarts timed out timers with AutoRestart on.
 	[UpdateInGroup(typeof(LateSimulationSystemGroup), OrderLast = true)]
 	public class TimerAutoRestartSystem : SystemBase
 	{
@@ -10,8 +11,6 @@ namespace ECS_Logic.Timers.Systems
 
 		protected override void OnCreate()
 		{
-			base.OnCreate();
-
 			commandBufferSystem = World.DefaultGameObjectInjectionWorld
 				.GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
 		}
