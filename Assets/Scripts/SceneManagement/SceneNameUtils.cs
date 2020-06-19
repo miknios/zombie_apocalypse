@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DefaultNamespace
+namespace SceneManagement
 {
 	public static class SceneNameUtils
 	{
@@ -9,7 +9,7 @@ namespace DefaultNamespace
 			Gameplay,
 			Menu
 		}
-		
+
 		private const string GAMEPLAY_SCENE = "GameplayScene";
 		private const string MENU_SCENE = "MainMenuScene";
 

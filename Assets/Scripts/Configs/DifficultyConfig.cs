@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "DifficultyConfig", menuName = "ZombieApocalypse/Configs/DifficultyConfig")]
-public class DifficultyConfig : ScriptableObject
+namespace Configs
 {
-	[SerializeField] private SpawnerConfig spawnerConfig = null;
-	[SerializeField] private PlayerConfig playerConfig = null;
+	[CreateAssetMenu(fileName = "DifficultyConfig", menuName = "ZombieApocalypse/Configs/DifficultyConfig")]
+	public class DifficultyConfig : ScriptableObject
+	{
+		[SerializeField] private SpawnerConfig spawnerConfig = null;
+		[SerializeField] private PlayerConfig playerConfig = null;
 	
-	public SpawnerConfig SpawnerConfig => spawnerConfig;
-	public PlayerConfig PlayerConfig => playerConfig;
+		public SpawnerConfig SpawnerConfig => spawnerConfig;
+		public PlayerConfig PlayerConfig => playerConfig;
+	}
 }

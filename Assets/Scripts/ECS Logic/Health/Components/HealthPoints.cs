@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-namespace ECS_Logic.Common.Health.Components
+namespace ECS_Logic.Health.Components
 {
 	public struct HealthPoints : IComponentData
 	{

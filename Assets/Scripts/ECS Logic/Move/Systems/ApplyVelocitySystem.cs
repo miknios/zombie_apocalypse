@@ -1,11 +1,11 @@
-﻿using ECS_Logic;
-using ECS_Logic.Common.Move.Components;
+﻿using Configuration;
+using ECS_Logic.Move.Components;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
 
-namespace DefaultNamespace
+namespace ECS_Logic.Move.Systems
 {
 	[UpdateInGroup(typeof(ApplySelfContainedDataSystemGroup))]
 	public class ApplyVelocitySystem : SystemBase
@@ -45,7 +45,7 @@ namespace DefaultNamespace
 		protected override void OnCreate()
 		{
 			entityQuery = GetEntityQuery(
-				ComponentType.ReadWrite<Translation>(), 
+				ComponentType.ReadWrite<Translation>(),
 				ComponentType.ReadOnly<CurrentVelocity>());
 		}
 

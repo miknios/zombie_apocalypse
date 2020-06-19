@@ -2,22 +2,22 @@
 using ECS_Logic.Timers.Components.TimerTypes;
 using Unity.Entities;
 
-namespace ECS_Logic.AutoDestruction.Systems
+namespace ECS_Logic.AutoDestroy.Systems
 {
 	public class AutoDestroySystem : SystemBase
 	{
 		private EntityCommandBufferSystem commandBufferSystem;
-		
+
 		protected override void OnCreate()
 		{
 			commandBufferSystem = World.DefaultGameObjectInjectionWorld
 				.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
 		}
-		
+
 		protected override void OnUpdate()
 		{
 			var commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
-			
+
 			Entities
 				.WithAll<Timeout, AutoDestroyTimer>()
 				.ForEach((Entity entity, int entityInQueryIndex) =>
@@ -25,7 +25,7 @@ namespace ECS_Logic.AutoDestruction.Systems
 					commandBuffer.DestroyEntity(entityInQueryIndex, entity);
 				})
 				.ScheduleParallel();
-			
+
 			commandBufferSystem.AddJobHandleForProducer(Dependency);
 		}
 	}

@@ -1,15 +1,15 @@
-﻿using DefaultNamespace.ECS_Logic.Common.Components;
+﻿using ECS_Logic.Common.Components;
 using ECS_Logic.Timers.Components;
 using ECS_Logic.Timers.Components.TimerTypes;
 using Unity.Entities;
 using UnityEngine;
 
-namespace ECS_Logic.Common.Collision.Components
+namespace AuthoringComponents
 {
 	public class AutoDestroyAuthoring : MonoBehaviour, IConvertGameObjectToEntity
 	{
 		[SerializeField] private float destroyAfterSeconds = 0.625f;
-		
+
 		public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
 		{
 			dstManager.AddComponentData(entity, new AutoDestroyTimer());

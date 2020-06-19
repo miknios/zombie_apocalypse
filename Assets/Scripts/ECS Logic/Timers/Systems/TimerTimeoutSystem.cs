@@ -1,8 +1,8 @@
-﻿using ECS_Logic;
+﻿using Configuration;
 using ECS_Logic.Timers.Components;
 using Unity.Entities;
 
-namespace DefaultNamespace
+namespace ECS_Logic.Timers.Systems
 {
 	[UpdateInGroup(typeof(ApplySelfContainedDataSystemGroup))]
 	[UpdateAfter(typeof(TimerStepSystem))]
@@ -13,7 +13,7 @@ namespace DefaultNamespace
 		protected override void OnCreate()
 		{
 			base.OnCreate();
-			
+
 			commandBufferSystem = World.DefaultGameObjectInjectionWorld
 				.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
 		}
@@ -21,16 +21,16 @@ namespace DefaultNamespace
 		protected override void OnUpdate()
 		{
 			var commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
-			
+
 			Entities
 				.WithChangeFilter<Timer>()
 				.ForEach((Entity entity, int entityInQueryIndex, in Timer timerComponent) =>
 				{
-					if(timerComponent.CurrentTime == 0)
+					if (timerComponent.CurrentTime == 0)
 						commandBuffer.AddComponent<Timeout>(entityInQueryIndex, entity);
 				})
 				.ScheduleParallel();
-			
+
 			commandBufferSystem.AddJobHandleForProducer(Dependency);
 		}
 	}

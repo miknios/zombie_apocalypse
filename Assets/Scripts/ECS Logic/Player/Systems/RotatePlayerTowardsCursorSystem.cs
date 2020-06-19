@@ -1,9 +1,11 @@
-﻿using DefaultNamespace;
-using ECS_Logic;
+﻿using Configuration;
+using ECS_Logic.Components;
+using ECS_Logic.TagComponents;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Transforms;
 
-namespace Unity.Mathematics
+namespace ECS_Logic.Player.Systems
 {
 	[UpdateInGroup(typeof(ContextWideDataDependentSystemGroup))]
 	public class RotatePlayerTowardsCursorSystem : SystemBase
@@ -23,10 +25,10 @@ namespace Unity.Mathematics
 		{
 			if (playerQuery.IsEmptyIgnoreFilter)
 				return;
-			
+
 			Entity playerEntity = playerQuery.GetSingletonEntity();
 			var commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
-			
+
 			Entities
 				.WithChangeFilter<CursorWorldPosition>()
 				.ForEach((int entityInQueryIndex, in CursorWorldPosition cursorPosition) =>

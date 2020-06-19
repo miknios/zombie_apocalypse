@@ -1,75 +1,77 @@
-﻿using AuthoringComponents;
-using DG.Tweening;
+﻿using DG.Tweening;
+using ECS_Logic.Weapons;
 using Signals;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-public class SpellCooldownIndicator : MonoBehaviour
+namespace UI
 {
-	[SerializeField] private SpellType spellType = SpellType.FireStrike;
-	[SerializeField] private float timerTimeStep = 0.1f;
-	[SerializeField] private TMP_Text cooldownLabel = null;
-	[SerializeField] private Image iconImage = null;
-
-	private RectTransform iconImageTransform;
-
-	[Inject]
-	public void ConstructWithInjection(SignalBus signalBus)
+	public class SpellCooldownIndicator : MonoBehaviour
 	{
-		iconImageTransform = iconImage.transform as RectTransform;
-		ClearText();
-		signalBus.Subscribe<SpellFiredSignal>(ProcessSignal);
-	}
+		[SerializeField] private SpellType spellType = SpellType.FireStrike;
+		[SerializeField] private TMP_Text cooldownLabel = null;
+		[SerializeField] private Image iconImage = null;
 
-	private void ClearText()
-	{
-		cooldownLabel.SetText("");
-	}
+		private RectTransform iconImageTransform;
 
-	private void ProcessSignal(SpellFiredSignal spellFiredSignal)
-	{
-		if(spellFiredSignal.SpellType != spellType)
-			return;
+		[Inject]
+		public void ConstructWithInjection(SignalBus signalBus)
+		{
+			iconImageTransform = iconImage.transform as RectTransform;
+			ClearText();
+			signalBus.Subscribe<SpellFiredSignal>(ProcessSignal);
+		}
 
-		AnimateCooldown(spellFiredSignal.Cooldown);
-	}
+		private void ClearText()
+		{
+			cooldownLabel.SetText("");
+		}
 
-	private void AnimateCooldown(float cooldown)
-	{
-		DOTween
-			.To(SetTextToCurrentTime, cooldown, 0, cooldown)
-			.OnComplete(IndicateSpellAvailable);
-	}
+		private void ProcessSignal(SpellFiredSignal spellFiredSignal)
+		{
+			if (spellFiredSignal.SpellType != spellType)
+				return;
 
-	private void IndicateSpellAvailable()
-	{
-		ClearText();
-		KillTweens();
+			AnimateCooldown(spellFiredSignal.Cooldown);
+		}
 
-		iconImageTransform
-			.DOScale(1.2f, 0.1f)
-			.SetLoops(2, LoopType.Yoyo);
+		private void AnimateCooldown(float cooldown)
+		{
+			DOTween
+				.To(SetTextToCurrentTime, cooldown, 0, cooldown)
+				.OnComplete(IndicateSpellAvailable);
+		}
 
-		iconImage
-			.DOColor(Color.green, 0.3f)
-			.SetLoops(2, LoopType.Yoyo);
-	}
+		private void IndicateSpellAvailable()
+		{
+			ClearText();
+			KillTweens();
 
-	private void KillTweens()
-	{
-		iconImageTransform.DOKill(true);
-		iconImage.DOKill(true);
-	}
+			iconImageTransform
+				.DOScale(1.2f, 0.1f)
+				.SetLoops(2, LoopType.Yoyo);
 
-	private void SetTextToCurrentTime(float i)
-	{
-		cooldownLabel.SetText($"{i:0.0}s");
-	}
+			iconImage
+				.DOColor(Color.green, 0.3f)
+				.SetLoops(2, LoopType.Yoyo);
+		}
 
-	private void OnDestroy()
-	{
-		KillTweens();
+		private void KillTweens()
+		{
+			iconImageTransform.DOKill(true);
+			iconImage.DOKill(true);
+		}
+
+		private void SetTextToCurrentTime(float i)
+		{
+			cooldownLabel.SetText($"{i:0.0}s");
+		}
+
+		private void OnDestroy()
+		{
+			KillTweens();
+		}
 	}
 }

@@ -1,14 +1,14 @@
-﻿using DefaultNamespace;
+﻿using ECS_Logic.TagComponents;
 using Signals;
 using Unity.Entities;
 using Zenject;
 
-namespace ECS_Logic.DataTrack
+namespace ECS_Logic.DataTrack.Systems
 {
 	[UpdateInGroup(typeof(PresentationSystemGroup))]
 	public class AliveEnemiesCountSignalSystem : SystemBase
 	{
-		[Inject] private SignalBus signalBus;
+		[Inject] private SignalBus signalBus = null;
 		private EntityQuery query;
 		private int previousCount;
 
@@ -21,10 +21,10 @@ namespace ECS_Logic.DataTrack
 		protected override void OnUpdate()
 		{
 			int currentCount = query.CalculateEntityCount();
-			if(currentCount == previousCount)
+			if (currentCount == previousCount)
 				return;
-			
-			signalBus.Fire(new AliveEnemiesSignal{AliveEnemiesCount = currentCount});
+
+			signalBus.Fire(new AliveEnemiesSignal {AliveEnemiesCount = currentCount});
 			previousCount = currentCount;
 		}
 	}

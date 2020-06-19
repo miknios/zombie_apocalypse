@@ -1,14 +1,15 @@
-﻿using Signals;
+﻿using Configuration;
+using Signals;
 using Zenject;
 
-namespace DefaultNamespace
+namespace Installers
 {
 	public class ProjectInstaller : MonoInstaller
 	{
 		public override void InstallBindings()
 		{
 			BindSignals();
-			
+
 			Container.Bind<IInitializable>().To<GameplayWorldInitialization>().AsSingle();
 		}
 

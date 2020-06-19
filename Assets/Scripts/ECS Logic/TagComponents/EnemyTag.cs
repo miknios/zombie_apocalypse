@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-namespace DefaultNamespace
+namespace ECS_Logic.TagComponents
 {
 	[GenerateAuthoringComponent]
 	public struct EnemyTag : IComponentData { }

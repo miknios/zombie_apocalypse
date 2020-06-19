@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
 using Unity.Mathematics;
 
-namespace DefaultNamespace
+namespace ECS_Logic.Components
 {
 	public struct CursorWorldPosition : IComponentData
 	{

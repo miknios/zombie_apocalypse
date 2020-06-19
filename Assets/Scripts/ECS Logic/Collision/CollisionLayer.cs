@@ -1,4 +1,4 @@
-﻿namespace ECS_Logic.Common.Collision.Components
+﻿namespace ECS_Logic.Collision
 {
 	public enum CollisionLayer
 	{

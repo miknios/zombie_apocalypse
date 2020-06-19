@@ -10,7 +10,7 @@ namespace ECS_Logic.Weapons.Systems
 	public class FireSpellFiredSignalSystem : SystemBase
 	{
 		[Inject] private SignalBus signalBus = null;
-		
+
 		protected override void OnUpdate()
 		{
 			Entities
@@ -18,9 +18,9 @@ namespace ECS_Logic.Weapons.Systems
 				.WithNone<Timeout>()
 				.ForEach((in Spell spell, in Timer timer) =>
 				{
-					if(timer.CurrentTime != timer.InitialTime)
+					if (timer.CurrentTime != timer.InitialTime)
 						return;
-					
+
 					signalBus.Fire(new SpellFiredSignal
 					{
 						SpellType = spell.SpellType,

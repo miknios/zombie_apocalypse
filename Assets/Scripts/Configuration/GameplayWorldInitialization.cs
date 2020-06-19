@@ -1,12 +1,12 @@
 ﻿using Unity.Entities;
 using Zenject;
 
-namespace DefaultNamespace
+namespace Configuration
 {
 	public class GameplayWorldInitialization : IInitializable
 	{
 		[Inject] private DiContainer diContainer = null;
-		
+
 		public void Initialize()
 		{
 			InjectIntoSystems();

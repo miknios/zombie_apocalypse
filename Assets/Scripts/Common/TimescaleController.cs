@@ -1,29 +1,31 @@
-﻿using System;
-using Signals;
+﻿using Signals;
 using UnityEngine;
 using Zenject;
 
-public class TimescaleController : MonoBehaviour
+namespace Common
 {
-	[Inject] private SignalBus signalBus = null;
-
-	private void Awake()
+	public class TimescaleController : MonoBehaviour
 	{
-		signalBus.Subscribe<GameOverSignal>(() => SetTimescaleToZero());
-	}
+		[Inject] private SignalBus signalBus = null;
 
-	private void SetTimescaleToZero()
-	{
-		Time.timeScale = 0;
-	}
+		private void Awake()
+		{
+			signalBus.Subscribe<GameOverSignal>(() => SetTimescaleToZero());
+		}
 
-	private void OnDestroy()
-	{
-		RestoreInitialTimescale();
-	}
+		private void SetTimescaleToZero()
+		{
+			Time.timeScale = 0;
+		}
 
-	private void RestoreInitialTimescale()
-	{
-		Time.timeScale = 1;
+		private void OnDestroy()
+		{
+			RestoreInitialTimescale();
+		}
+
+		private void RestoreInitialTimescale()
+		{
+			Time.timeScale = 1;
+		}
 	}
 }

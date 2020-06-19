@@ -1,14 +1,17 @@
-﻿using UnityEngine;
+﻿using Common;
+using Configs;
+using UnityEngine;
 using Zenject;
 
-namespace DefaultNamespace
+namespace Difficulty
 {
-	[CreateAssetMenu(fileName = "DifficultyConfigInstaller", menuName = "ZombieApocalypse/Configs/DifficultyConfigInstaller")]
+	[CreateAssetMenu(fileName = "DifficultyConfigInstaller",
+		menuName = "ZombieApocalypse/Configs/DifficultyConfigInstaller")]
 	public class DifficultyConfigInstaller : ScriptableObjectInstaller
 	{
-		[SerializeField] private DifficultyConfig easyConfig;
-		[SerializeField] private DifficultyConfig mediumConfig;
-		[SerializeField] private DifficultyConfig hardConfig;
+		[SerializeField] private DifficultyConfig easyConfig = null;
+		[SerializeField] private DifficultyConfig mediumConfig = null;
+		[SerializeField] private DifficultyConfig hardConfig = null;
 
 		public override void InstallBindings()
 		{

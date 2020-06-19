@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using AuthoringComponents;
-using DefaultNamespace.ECS_Logic.Common.Components;
+using ECS_Logic.Common.Components;
 using ECS_Logic.Timers.Components;
+using ECS_Logic.Weapons;
 using ECS_Logic.Weapons.Components;
 using Unity.Entities;
 using UnityEngine;
 
-namespace ECS_Logic.Common.Collision.Components
+namespace AuthoringComponents
 {
 	public class GunAuthoring : MonoBehaviour, IConvertGameObjectToEntity, IDeclareReferencedPrefabs
 	{
@@ -21,6 +21,7 @@ namespace ECS_Logic.Common.Collision.Components
 		{
 			referencedPrefabs.Add(projectilePrefab);
 		}
+
 		public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
 		{
 			dstManager.AddComponentData(entity, new Gun

@@ -1,12 +1,12 @@
-﻿using ECS_Logic;
-using ECS_Logic.Common.Collision.Components;
+﻿using Configuration;
+using ECS_Logic.Collision.Components;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-namespace DefaultNamespace
+namespace ECS_Logic.Collision.Systems
 {
 	[UpdateInGroup(typeof(CollisionDetectionSystemGroup))]
 	public class CollisionDetectionSystem : SystemBase
@@ -59,7 +59,7 @@ namespace DefaultNamespace
 			var collisionDetectionJobHandle = Entities
 				.WithReadOnly(triggerCellHashArray)
 				.WithReadOnly(hitboxDataForCellHash)
-				.ForEach((int entityInQueryIndex, ref DynamicBuffer<TriggerCollisionBufferElement> collisionBuffer, 
+				.ForEach((int entityInQueryIndex, ref DynamicBuffer<TriggerCollisionBufferElement> collisionBuffer,
 					in TriggerArea triggerArea, in LocalToWorld localToWorld) =>
 				{
 					var triggerCellHash = triggerCellHashArray[entityInQueryIndex];
@@ -67,11 +67,11 @@ namespace DefaultNamespace
 					while (hitboxDataForCell.MoveNext())
 					{
 						var hitboxData = hitboxDataForCell.Current;
-						
-						if(triggerArea.CollisionLayer != hitboxData.CollisionLayer)
+
+						if (triggerArea.CollisionLayer != hitboxData.CollisionLayer)
 							continue;
 
-						if(!CirclesAreIntersecting(localToWorld.Position, triggerArea.Radius, 
+						if (!CirclesAreIntersecting(localToWorld.Position, triggerArea.Radius,
 							hitboxData.Position, hitboxData.Radius))
 							continue;
 
@@ -82,7 +82,8 @@ namespace DefaultNamespace
 
 			Dependency = collisionDetectionJobHandle;
 			var disposeJobHandle = triggerCellHashArray.Dispose(Dependency);
-			disposeJobHandle = JobHandle.CombineDependencies(disposeJobHandle, hitboxDataForCellHash.Dispose(Dependency));
+			disposeJobHandle =
+				JobHandle.CombineDependencies(disposeJobHandle, hitboxDataForCellHash.Dispose(Dependency));
 			Dependency = disposeJobHandle;
 		}
 

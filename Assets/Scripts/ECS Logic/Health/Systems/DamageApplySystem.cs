@@ -1,8 +1,9 @@
-﻿using ECS_Logic.Common.Health.Components;
+﻿using Configuration;
+using ECS_Logic.Health.Components;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace ECS_Logic.Common.Health.Systems
+namespace ECS_Logic.Health.Systems
 {
 	[UpdateInGroup(typeof(ApplySelfContainedDataSystemGroup))]
 	public class DamageApplySystem : SystemBase
@@ -20,7 +21,7 @@ namespace ECS_Logic.Common.Health.Systems
 			var commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
 
 			Entities
-				.ForEach((Entity entity, int entityInQueryIndex, 
+				.ForEach((Entity entity, int entityInQueryIndex,
 					ref HealthPoints healthPoints, ref DynamicBuffer<DamageToApplyBufferElement> damageBuffer) =>
 				{
 					int damage = 0;
@@ -28,11 +29,12 @@ namespace ECS_Logic.Common.Health.Systems
 					{
 						damage += damageBuffer[i].Value;
 					}
+
 					damageBuffer.Clear();
 
 					healthPoints.Value = math.max(healthPoints.Value - damage, 0);
-					
-					if(healthPoints.Value == 0)
+
+					if (healthPoints.Value == 0)
 						commandBuffer.AddComponent<HealthDepleted>(entityInQueryIndex, entity);
 				})
 				.ScheduleParallel();

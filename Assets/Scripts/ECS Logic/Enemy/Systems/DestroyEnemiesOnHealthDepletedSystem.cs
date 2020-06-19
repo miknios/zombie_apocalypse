@@ -1,5 +1,5 @@
-﻿using DefaultNamespace;
-using ECS_Logic.Common.Health.Components;
+﻿using ECS_Logic.Health.Components;
+using ECS_Logic.TagComponents;
 using Unity.Entities;
 
 namespace ECS_Logic.Enemy.Systems
@@ -26,7 +26,7 @@ namespace ECS_Logic.Enemy.Systems
 					commandBuffer.DestroyEntity(entityInQueryIndex, entity);
 				})
 				.ScheduleParallel();
-			
+
 			commandBufferSystem.AddJobHandleForProducer(Dependency);
 		}
 	}

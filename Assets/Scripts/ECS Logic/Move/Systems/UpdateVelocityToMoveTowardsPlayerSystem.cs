@@ -1,10 +1,11 @@
-﻿using ECS_Logic;
-using ECS_Logic.Common.Move.Components;
+﻿using Configuration;
+using ECS_Logic.Move.Components;
+using ECS_Logic.TagComponents;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-namespace DefaultNamespace
+namespace ECS_Logic.Move.Systems
 {
 	[UpdateInGroup(typeof(UpdateSimulationDataSystemGroup))]
 	public class UpdateVelocityToMoveTowardsPlayerSystem : SystemBase
@@ -32,12 +33,13 @@ namespace DefaultNamespace
 					commandBuffer.AddComponent<CurrentVelocity>(entityInQueryIndex, entity);
 				})
 				.ScheduleParallel();
-			
+
 			commandBufferSystem.AddJobHandleForProducer(Dependency);
-			
+
 			Entities
 				.WithAll<MoveTowardsPlayer>()
-				.ForEach((ref CurrentVelocity currentVelocity, in BaseSpeed baseSpeedComponent, in Translation translation) =>
+				.ForEach((ref CurrentVelocity currentVelocity, in BaseSpeed baseSpeedComponent,
+					in Translation translation) =>
 				{
 					float3 playerPosition = GetComponent<Translation>(playerEntity).Value;
 					float3 currentPosition = translation.Value;

@@ -1,6 +1,6 @@
-﻿using DefaultNamespace;
-using ECS_Logic.Common.Health.Components;
-using ECS_Logic.DataTrack.Components;
+﻿using ECS_Logic.DataTrack.Components;
+using ECS_Logic.Health.Components;
+using ECS_Logic.TagComponents;
 using Signals;
 using Unity.Collections;
 using Unity.Entities;
@@ -20,7 +20,7 @@ namespace ECS_Logic.DataTrack.Systems
 		{
 			var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 			entityManager.CreateEntity(typeof(KilledEnemiesCount));
-			
+
 			sumArray = new NativeArray<int>(1, Allocator.Persistent);
 			killedEnemiesCountQuery = GetEntityQuery(ComponentType.ReadWrite<KilledEnemiesCount>());
 			commandBufferSystem = World.DefaultGameObjectInjectionWorld
@@ -34,10 +34,7 @@ namespace ECS_Logic.DataTrack.Systems
 
 			var jobHandle = Entities
 				.WithAll<EnemyTag, HealthDepleted>()
-				.ForEach((Entity entity) =>
-				{
-					array[0]++;
-				})
+				.ForEach((Entity entity) => { array[0]++; })
 				.Schedule(Dependency);
 
 			var currentKilledEnemiesEntity = killedEnemiesCountQuery.GetSingletonEntity();
@@ -56,13 +53,13 @@ namespace ECS_Logic.DataTrack.Systems
 
 			Dependency = finalJobHandle;
 			commandBufferSystem.AddJobHandleForProducer(Dependency);
-			
+
 			Entities
 				.WithoutBurst()
 				.WithChangeFilter<KilledEnemiesCount>()
 				.ForEach((in KilledEnemiesCount killedEnemiesCount) =>
 				{
-					signalBus.Fire(new KilledEnemySignal{EnemiesKilledCount = killedEnemiesCount.Value});
+					signalBus.Fire(new KilledEnemySignal {EnemiesKilledCount = killedEnemiesCount.Value});
 				})
 				.Run();
 		}

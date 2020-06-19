@@ -1,5 +1,6 @@
-﻿using DefaultNamespace;
-using DefaultNamespace.ECS_Logic.Common.Components;
+﻿using Configuration;
+using ECS_Logic.Common.Components;
+using ECS_Logic.Spawner.Components;
 using ECS_Logic.Timers.Components;
 using ECS_Logic.Timers.Components.TimerTypes;
 using Unity.Entities;
@@ -9,7 +10,7 @@ using Unity.Transforms;
 using UnityEngine;
 using Random = Unity.Mathematics.Random;
 
-namespace ECS_Logic.Systems
+namespace ECS_Logic.Spawner.Systems
 {
 	[UpdateInGroup(typeof(ContinousWorkProducerSystemGroup))]
 	public class AroundCenterCyclicSpawnerSystem : SystemBase
@@ -17,15 +18,15 @@ namespace ECS_Logic.Systems
 		private EntityCommandBufferSystem commandBufferSystem;
 
 		protected override void OnCreate()
-         		{
-         			commandBufferSystem = World.DefaultGameObjectInjectionWorld
-         				.GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
-         		}
+		{
+			commandBufferSystem = World.DefaultGameObjectInjectionWorld
+				.GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
+		}
 
 		protected override void OnUpdate()
 		{
 			var commandBuffer = commandBufferSystem.CreateCommandBuffer().ToConcurrent();
-			
+
 			Entities
 				.WithAll<Timeout, AroundCenterCyclicSpawnerTimerComponent>()
 				.ForEach((Entity entity, int entityInQueryIndex, in Timer timerComponent) =>
@@ -43,11 +44,11 @@ namespace ECS_Logic.Systems
 					commandBuffer.SetComponent(entityInQueryIndex, spawnerEntity, randomGeneratorComponent);
 				})
 				.ScheduleParallel();
-			
+
 			commandBufferSystem.AddJobHandleForProducer(Dependency);
 		}
 
-		private static void SpawnEntity(ref EntityCommandBuffer.Concurrent commandBuffer, 
+		private static void SpawnEntity(ref EntityCommandBuffer.Concurrent commandBuffer,
 			ref AroundCenterCyclicSpawner spawner, ref Random randomGenerator, int entityInQueryIndex)
 		{
 			var spawnedEntity = commandBuffer.Instantiate(entityInQueryIndex, spawner.EntityToSpawn);
@@ -60,7 +61,7 @@ namespace ECS_Logic.Systems
 
 			Color color = Color.HSVToRGB(randomGenerator.NextFloat(), 0.6f, 0.6f);
 			float4 colorValue = new float4(color.r, color.g, color.b, color.a);
-			MaterialColor materialColor = new MaterialColor{Value = colorValue};
+			MaterialColor materialColor = new MaterialColor {Value = colorValue};
 			commandBuffer.AddComponent(entityInQueryIndex, spawnedEntity, materialColor);
 		}
 

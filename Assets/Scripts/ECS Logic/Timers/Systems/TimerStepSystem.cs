@@ -1,10 +1,10 @@
-﻿using DefaultNamespace.ECS_Logic.Common.Components;
-using ECS_Logic;
+﻿using Configuration;
+using ECS_Logic.Common.Components;
 using ECS_Logic.Timers.Components;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace DefaultNamespace
+namespace ECS_Logic.Timers.Systems
 {
 	[UpdateInGroup(typeof(ApplySelfContainedDataSystemGroup))]
 	public class TimerStepSystem : SystemBase
@@ -14,7 +14,7 @@ namespace DefaultNamespace
 			float deltaTime = Time.DeltaTime;
 
 			Entities
-				.ForEach((int entityInQueryIndex, ref Timer timerComponent, 
+				.ForEach((int entityInQueryIndex, ref Timer timerComponent,
 					in Enabled enabledComponent) =>
 				{
 					float newCurrentTime = timerComponent.CurrentTime - deltaTime;

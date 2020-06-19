@@ -1,12 +1,13 @@
-﻿using DefaultNamespace.ECS_Logic.Common.Components;
-using ECS_Logic.Common.Health.Systems;
-using ECS_Logic.Common.Move.Components;
+﻿using Configuration;
+using ECS_Logic.Common.Components;
 using ECS_Logic.EffectTriggers.Components;
+using ECS_Logic.Health.Systems;
+using ECS_Logic.Move.Components;
 using ECS_Logic.Timers.Components;
 using ECS_Logic.Timers.Components.TimerTypes;
 using Unity.Entities;
 
-namespace ECS_Logic
+namespace ECS_Logic.EffectTriggers.Systems
 {
 	[UpdateInGroup(typeof(ApplySelfContainedDataSystemGroup))]
 	[UpdateBefore(typeof(DamageApplySystem))]

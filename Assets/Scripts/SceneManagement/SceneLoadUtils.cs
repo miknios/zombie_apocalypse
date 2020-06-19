@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
 using UnityEngine.SceneManagement;
 
-namespace DefaultNamespace
+namespace SceneManagement
 {
 	public static class SceneLoadUtils
 	{

@@ -1,12 +1,14 @@
-﻿using DefaultNamespace;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayButtonBehaviour : ButtonBehaviour
+namespace UI
 {
-	[SerializeField] private GameObject difficultyChoosePanel;
-	
-	protected override void OnButtonClick()
+	public class PlayButtonBehaviour : ButtonBehaviour
 	{
-		difficultyChoosePanel.SetActive(true);
+		[SerializeField] private GameObject difficultyChoosePanel = null;
+
+		protected override void OnButtonClick()
+		{
+			difficultyChoosePanel.SetActive(true);
+		}
 	}
 }

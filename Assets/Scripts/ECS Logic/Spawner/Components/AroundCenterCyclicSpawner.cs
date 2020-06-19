@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-namespace DefaultNamespace
+namespace ECS_Logic.Spawner.Components
 {
 	public struct AroundCenterCyclicSpawner : IComponentData
 	{

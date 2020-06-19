@@ -1,15 +1,17 @@
 ﻿using Signals;
-using UI;
 using Zenject;
 
-public class AliveEnemiesLabel : EnemyCountLabelBase
+namespace UI
 {
-	[Inject] private SignalBus signalBus;
-
-	protected override void OnAwake()
+	public class AliveEnemiesLabel : EnemyCountLabelBase
 	{
-		signalBus.Subscribe<AliveEnemiesSignal>(s => UpdateLabel(s.AliveEnemiesCount));
-	}
+		[Inject] private SignalBus signalBus = null;
 
-	protected override string GetTextForCount(int count) => $"Alive enemies: {count}";
+		protected override void OnAwake()
+		{
+			signalBus.Subscribe<AliveEnemiesSignal>(s => UpdateLabel(s.AliveEnemiesCount));
+		}
+
+		protected override string GetTextForCount(int count) => $"Alive enemies: {count}";
+	}
 }

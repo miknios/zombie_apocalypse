@@ -1,5 +1,4 @@
-﻿using AuthoringComponents;
-using Unity.Entities;
+﻿using Unity.Entities;
 
 namespace ECS_Logic.Weapons.Components
 {

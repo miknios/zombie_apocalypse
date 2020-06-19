@@ -1,4 +1,4 @@
-﻿using AuthoringComponents;
+﻿using ECS_Logic.Weapons;
 
 namespace Signals
 {

@@ -1,7 +1,7 @@
 ﻿using ECS_Logic.Timers.Components;
 using Unity.Entities;
 
-namespace DefaultNamespace
+namespace ECS_Logic.Timers.Systems
 {
 	[UpdateInGroup(typeof(LateSimulationSystemGroup), OrderLast = true)]
 	public class TimerAutoRestartSystem : SystemBase
@@ -24,14 +24,14 @@ namespace DefaultNamespace
 				.WithAll<Timeout>()
 				.ForEach((Entity entity, int entityInQueryIndex, ref Timer timerComponent) =>
 				{
-					if(!timerComponent.AutoRestart)
+					if (!timerComponent.AutoRestart)
 						return;
 
 					timerComponent.CurrentTime = timerComponent.InitialTime;
 					commandBuffer.RemoveComponent<Timeout>(entityInQueryIndex, entity);
 				})
 				.ScheduleParallel();
-			
+
 			commandBufferSystem.AddJobHandleForProducer(Dependency);
 		}
 	}

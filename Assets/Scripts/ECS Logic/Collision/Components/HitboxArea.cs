@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-namespace ECS_Logic.Common.Collision.Components
+namespace ECS_Logic.Collision.Components
 {
 	[GenerateAuthoringComponent]
 	public struct HitboxArea : IComponentData

@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-namespace DefaultNamespace.ECS_Logic.Common.Components
+namespace ECS_Logic.Common.Components
 {
 	public class OwnerComponent : IComponentData
 	{

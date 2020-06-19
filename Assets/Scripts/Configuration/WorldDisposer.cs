@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
 using Zenject;
 
-namespace DefaultNamespace
+namespace Configuration
 {
 	public class WorldDisposer : IInitializable
 	{

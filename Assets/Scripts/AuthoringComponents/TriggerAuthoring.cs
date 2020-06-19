@@ -1,8 +1,10 @@
-﻿using ECS_Logic.EffectTriggers.Components;
+﻿using ECS_Logic.Collision;
+using ECS_Logic.Collision.Components;
+using ECS_Logic.EffectTriggers.Components;
 using Unity.Entities;
 using UnityEngine;
 
-namespace ECS_Logic.Common.Collision.Components
+namespace AuthoringComponents
 {
 	public class TriggerAuthoring : MonoBehaviour, IConvertGameObjectToEntity
 	{
@@ -11,7 +13,7 @@ namespace ECS_Logic.Common.Collision.Components
 		[SerializeField] private EffectType effectType = EffectType.Damage;
 		[SerializeField] private float value = 70;
 		[SerializeField] private bool isPenetrative = false;
-		
+
 		public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
 		{
 			dstManager.AddComponentData(entity, new TriggerArea
@@ -25,7 +27,7 @@ namespace ECS_Logic.Common.Collision.Components
 				Value = value,
 				EffectType = effectType
 			});
-			
+
 			dstManager.AddBuffer<TriggerCollisionBufferElement>(entity);
 			dstManager.AddBuffer<AlreadyCollidedBufferElement>(entity);
 

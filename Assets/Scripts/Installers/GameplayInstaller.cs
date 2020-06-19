@@ -1,10 +1,13 @@
-﻿using DefaultNamespace;
+﻿using Configuration;
 using Zenject;
 
-public class GameplayInstaller : MonoInstaller
+namespace Installers
 {
-	public override void InstallBindings()
+	public class GameplayInstaller : MonoInstaller
 	{
-		Container.Bind<IInitializable>().To<GameplayWorldInitialization>().AsSingle();
+		public override void InstallBindings()
+		{
+			Container.Bind<IInitializable>().To<GameplayWorldInitialization>().AsSingle();
+		}
 	}
 }

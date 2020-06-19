@@ -1,3 +1,6 @@
 ﻿using UnityEngine;
 
-public class InitiallyDeactivated : MonoBehaviour { }
+namespace UI
+{
+	public class InitiallyDeactivated : MonoBehaviour { }
+}

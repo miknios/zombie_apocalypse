@@ -2,14 +2,17 @@
 using UnityEngine;
 using Zenject;
 
-public class GameOverObjectActivator : MonoBehaviour
+namespace Common
 {
-	[Inject]
-	public void ConstructWithInjection(SignalBus signalBus)
+	public class GameOverObjectActivator : MonoBehaviour
 	{
-		signalBus.Subscribe<GameOverSignal>(() => OnGameOver());
-		gameObject.SetActive(false);
-	}
+		[Inject]
+		public void ConstructWithInjection(SignalBus signalBus)
+		{
+			signalBus.Subscribe<GameOverSignal>(() => OnGameOver());
+			gameObject.SetActive(false);
+		}
 
-	private void OnGameOver() => gameObject.SetActive(true);
+		private void OnGameOver() => gameObject.SetActive(true);
+	}
 }

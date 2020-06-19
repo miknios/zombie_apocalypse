@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-namespace ECS_Logic.Common.Move.Components
+namespace ECS_Logic.Move.Components
 {
 	[GenerateAuthoringComponent]
 	public struct BaseSpeed : IComponentData

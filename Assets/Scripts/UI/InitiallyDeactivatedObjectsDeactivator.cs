@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 
-public class InitiallyDeactivatedObjectsDeactivator : MonoBehaviour
+namespace UI
 {
-	private void Awake()
+	public class InitiallyDeactivatedObjectsDeactivator : MonoBehaviour
 	{
-		var objectsToDeactivate = GetComponentsInChildren<InitiallyDeactivated>();
-		foreach (var objectToDeactivate in objectsToDeactivate)
+		private void Awake()
 		{
-			objectToDeactivate.gameObject.SetActive(false);
+			var objectsToDeactivate = GetComponentsInChildren<InitiallyDeactivated>();
+			foreach (var objectToDeactivate in objectsToDeactivate)
+			{
+				objectToDeactivate.gameObject.SetActive(false);
+			}
 		}
 	}
 }

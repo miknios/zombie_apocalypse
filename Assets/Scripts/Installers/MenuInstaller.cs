@@ -1,6 +1,7 @@
-﻿using Zenject;
+﻿using Configuration;
+using Zenject;
 
-namespace DefaultNamespace
+namespace Installers
 {
 	public class MenuInstaller : MonoInstaller
 	{

@@ -1,8 +1,9 @@
-﻿using ECS_Logic.Common.Collision.Components;
+﻿using Configuration;
+using ECS_Logic.Collision.Components;
 using ECS_Logic.EffectTriggers.Components;
 using Unity.Entities;
 
-namespace ECS_Logic
+namespace ECS_Logic.EffectTriggers.Systems
 {
 	[UpdateInGroup(typeof(CollisionDependentSystemGroup))]
 	public class ExtractEffectsFromCollisionsSystem : SystemBase

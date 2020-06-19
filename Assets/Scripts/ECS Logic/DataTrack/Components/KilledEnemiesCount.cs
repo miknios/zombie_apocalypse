@@ -4,6 +4,6 @@ namespace ECS_Logic.DataTrack.Components
 {
 	public struct KilledEnemiesCount : IComponentData
 	{
-		public int Value; 
+		public int Value;
 	}
 }
