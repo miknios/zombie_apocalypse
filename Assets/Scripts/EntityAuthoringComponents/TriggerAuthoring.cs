@@ -1,4 +1,5 @@
-﻿using ECS_Logic.Collision;
+﻿using System;
+using ECS_Logic.Collision;
 using ECS_Logic.Collision.Components;
 using ECS_Logic.EffectTriggers.Components;
 using Unity.Entities;
@@ -34,6 +35,12 @@ namespace EntityAuthoringComponents
 
 			if (isPenetrative)
 				dstManager.AddComponent<Penetratrive>(entity);
+		}
+
+		private void OnDrawGizmosSelected()
+		{
+			Gizmos.color = Color.red;
+			Gizmos.DrawWireSphere(transform.position, radius);
 		}
 	}
 }

@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 514ab89fd73c44029c58881068ceeae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 0.2
+  radius: 0.05
   collisionLayer: 1
   effectType: 0
   value: 70
